@@ -52,7 +52,7 @@ function Navbar() {
             </NavLink>
             <NavLink
               className="hover:text-blue-500"
-              to={"#contact"}
+              to={"/pricing"}
               onClick={() => setIsVisible(false)}>
               Pricing
             </NavLink>
@@ -104,7 +104,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             className="hover:text-blue-500"
-            to={"#contact"}
+            to={"/pricing"}
             onClick={() => setIsVisible(false)}>
             Pricing
           </NavLink>

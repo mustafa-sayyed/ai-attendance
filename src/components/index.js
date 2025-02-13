@@ -3,5 +3,5 @@ import FeatureBlock from "./FeatureBlock";
 import Footer from "./Footer";
 import Hero from "./Hero";
 import Navbar from "./Navbar";
-
-export { Navbar, Hero, FeatureBlock, Footer, CTA };
+import Pricing from "./Pricing";
+export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing };
