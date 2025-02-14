@@ -4,4 +4,4 @@ import Footer from "./Footer";
 import Hero from "./Hero";
 import Navbar from "./Navbar";
 
-export { Navbar, Hero, FeatureBlock, Footer, CTA };
+export { Navbar, Hero, FeatureBlock, Footer, CTA};

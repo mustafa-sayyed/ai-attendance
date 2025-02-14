@@ -58,7 +58,7 @@ function Navbar() {
             </NavLink>
             <NavLink
               className="hover:text-blue-500"
-              to={"#contact"}
+              to={"/contact"}
               onClick={() => setIsVisible(false)}>
               Contact Us
             </NavLink>
