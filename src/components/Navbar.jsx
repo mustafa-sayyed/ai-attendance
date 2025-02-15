@@ -58,7 +58,7 @@ function Navbar() {
             </NavLink>
             <NavLink
               className="hover:text-blue-500"
-              to={"#contact"}
+              to={"/contact-us"}
               onClick={() => setIsVisible(false)}>
               Contact Us
             </NavLink>
@@ -76,7 +76,7 @@ function Navbar() {
       <div
         className={`${
           isVisible ? "flex" : "hidden"
-        } items-center justify-between flex-col p-6 md:hidden absolute bg-[#030712] w-full`}>
+        } items-center justify-between flex-col p-6 md:hidden absolute z-50 bg-[#030712] w-full`}>
         <ul className="w-full flex flex-col space-y-5 md:space-y-0 p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 md:flex-row md:mt-0 md:border-0 bg-[#030712] border-gray-700">
           <NavLink
             className="hover:text-blue-500"
@@ -98,7 +98,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             className="hover:text-blue-500"
-            to={"#contact"}
+            to={"/contact-us"}
             onClick={() => setIsVisible(false)}>
             Contact Us
           </NavLink>

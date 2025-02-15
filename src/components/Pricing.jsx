@@ -3,7 +3,7 @@ import React from "react";
 function Pricing() {
   return (
     <section class="relative z-10 overflow-hidden bg-dark pt-16 pb-12 lg:pt-[120px] lg:pb-[90px]">
-      <div class="container mx-auto max-w-7xl">
+      <div class="container mx-auto max-w-6xl px-8 sm:px-0">
         <div class="-mx-4 flex flex-wrap">
           <div class="w-full px-4">
             <div class="mx-auto mb-[60px] max-w-[510px] text-center">
