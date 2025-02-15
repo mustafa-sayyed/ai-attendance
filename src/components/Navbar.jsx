@@ -58,7 +58,11 @@ function Navbar() {
             </NavLink>
             <NavLink
               className="hover:text-blue-500"
+<<<<<<< HEAD
               to={"/contact-us"}
+=======
+              to={"/contact"}
+>>>>>>> 79fb466c72f58fe168b1704d41fd3d7e6372ec6f
               onClick={() => setIsVisible(false)}>
               Contact Us
             </NavLink>
