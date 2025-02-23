@@ -1,5 +1,5 @@
 import React from "react";
-import { FaXTwitter, FaFacebook, FaGithub, FaInstagram  } from "react-icons/fa6";
+import { FaXTwitter, FaFacebook, FaGithub, FaLinkedinIn } from "react-icons/fa6";
 
 function Footer() {
   return (
@@ -20,7 +20,7 @@ function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:text-gray-400">
+                  className="text-gray-700 transition hover:text-gray-300">
                   <span className="sr-only">Facebook</span>
                   <FaFacebook size={30} />
                 </a>
@@ -31,9 +31,9 @@ function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:text-gray-400">
+                  className="text-gray-700 transition hover:text-gray-300">
                   <span className="sr-only">Instagram</span>
-                  <FaInstagram size={30} />
+                  <FaLinkedinIn size={30} />
                 </a>
               </li>
 
@@ -42,7 +42,7 @@ function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:text-gray-400">
+                  className="text-gray-700 transition hover:text-gray-300">
                   <span className="sr-only">Twitter</span>
                   <FaXTwitter size={30} />
                 </a>
@@ -53,7 +53,7 @@ function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:text-gray-400">
+                  className="text-gray-700 transition hover:text-gray-300">
                   <span className="sr-only">GitHub</span>
 
                   <FaGithub size={30} />
@@ -69,36 +69,31 @@ function Footer() {
               <ul className="mt-6 space-y-4 text-base">
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    1on1 Coaching{" "}
+                    1on1 Coaching
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Company Review{" "}
+                    Company Review
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Accounts Review{" "}
+                    Accounts Review
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    HR Consulting{" "}
+                    HR Consulting
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    SEO Optimisation{" "}
+                    SEO Optimisation
                   </a>
                 </li>
               </ul>
@@ -110,22 +105,19 @@ function Footer() {
               <ul className="mt-6 space-y-4 text-base">
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    About{" "}
+                    About
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Meet the Team{" "}
+                    Meet the Team
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Accounts Review{" "}
+                    Accounts Review
                   </a>
                 </li>
               </ul>
@@ -137,22 +129,19 @@ function Footer() {
               <ul className="mt-6 space-y-4 text-base">
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Contact{" "}
+                    Contact
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    FAQs{" "}
+                    FAQs
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Live Chat{" "}
+                    Live Chat
                   </a>
                 </li>
               </ul>
@@ -164,22 +153,19 @@ function Footer() {
               <ul className="mt-6 space-y-4 text-base">
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Accessibility{" "}
+                    Accessibility
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Returns Policy{" "}
+                    Returns Policy
                   </a>
                 </li>
 
                 <li>
                   <a href="#" className="text-gray-700 transition hover:text-gray-400">
-                    {" "}
-                    Refund Policy{" "}
+                    Refund Policy
                   </a>
                 </li>
 

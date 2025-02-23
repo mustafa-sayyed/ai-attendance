@@ -4,7 +4,7 @@ import image1 from "../assets/cctv-class.png";
 function Hero() {
   return (
     <div
-      className="h-[90vh] xl:px-44 lg:px-32 md:px-16 sm:px-16 px-8 py-28 lg:py-32 mx-auto bg-linear-to-t from-blue-800 to-[#030712]"
+      className="h-[90vh] xl:px-40 lg:px-20 md:px-16 sm:px-16 px-8 py-28 lg:py-32 mx-auto bg-linear-to-t from-blue-800 to-[#030712]"
       // style={{
       //   background: "rgb(25,60,184)",
       //   background: "linear-gradient(0deg, rgba(25,60,184,1) 0%, rgba(3,7,18,1) 100%)",
@@ -13,7 +13,7 @@ function Hero() {
       <div className="flex md:flex-row justify-center items-center flex-col">
         <div>
           <div className="lg:text-6xl md:text-5xl sm:text-4xl font-[Mona sans] text-3xl">
-            <span>AI-Powered Attendance</span> - Fast, Accurate, Reliable.
+            <span>AI-Powered <br></br> Attendance</span> - Fast, Accurate, Reliable.
           </div>
           <div className="text-xl mt-6 mb-3 sm:text-2xl md:text-3xl">
             No More Roll Calls—Just Facial Recognition.
