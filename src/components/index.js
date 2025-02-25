@@ -7,6 +7,8 @@ import Hero from "./Hero";
 import HowItWorks from "./HowItWorks";
 import Navbar from "./Navbar";
 import Pricing from "./Pricing";
+import Signin from "./Signin";
 
 
-export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks };
+
+export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin };

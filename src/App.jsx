@@ -1,5 +1,5 @@
 import React from "react";
-import { About, Contact, HowItWorks, Navbar, Pricing } from "./components";
+import { About, Contact, HowItWorks, Navbar, Pricing, Signin } from "./components";
 import { GetStarted, Home } from "./pages";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -15,6 +15,8 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/about" element={<About />}/>
           <Route path="/how-it-works" element={<HowItWorks />}/>
+          <Route path="/signin" element={<Signin />}/>
+
         </Routes>
       </div>
     </BrowserRouter>

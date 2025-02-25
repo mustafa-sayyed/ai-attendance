@@ -18,7 +18,7 @@ function Hero() {
           <div className="text-xl mt-6 mb-3 sm:text-2xl md:text-3xl">
             No More Roll Calls—Just Facial Recognition.
           </div>
-          <a href="/get-started">
+          <a href="/signin">
             <button
               className="py-4 px-6 rounded-4xl bg-blue-700 cursor-pointer hover:bg-blue-800 my-4"
               style={{ boxShadow: "0px 4px 24px #030712" }}>

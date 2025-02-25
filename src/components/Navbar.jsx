@@ -13,7 +13,7 @@ function Navbar() {
         </span>
 
         <div className="flex md:order-2 space-x-3 md:space-x-0 ">
-          <Link to="/get-started">
+          <Link to="/signin">
             <button
               type="button"
               className="hidden md:block text-white font-medium rounded-lg text-sm px-4 py-2 text-center bg-blue-600 hover:bg-blue-700 cursor-pointer">
@@ -63,7 +63,7 @@ function Navbar() {
               Contact Us
             </NavLink>
           </ul>
-          <Link to="/get-started" className="w-full">
+          <Link to="/signin" className="w-full">
             <button
               type="button"
               onClick={() => setIsVisible(false)}
@@ -109,7 +109,7 @@ function Navbar() {
             Pricing
           </NavLink>
         </ul>
-        <Link to="/get-started" className="w-full">
+        <Link to="/signin" className="w-full">
           <button
             type="button"
             onClick={() => setIsVisible(false)}

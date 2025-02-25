@@ -9,7 +9,7 @@ function CTA() {
           Streamline Your Attendance with AI
         </h2>
         <p className="mt-4 md:text-2xl text-xl text-white">Ready to get started?</p>
-        <a href="/get-started">
+        <a href="/signin">
           <button
             className="mt-6 px-6 py-3 text-white bg-linear-90 from-[#030712] to-blue-600 rounded-full hover:from-[#030712] hover:to-blue-700 cursor-pointer"
             >
