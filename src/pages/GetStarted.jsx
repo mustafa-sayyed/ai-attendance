@@ -10,6 +10,11 @@ import {
 import { FaChalkboardUser, FaPersonChalkboard, FaUserGear } from "react-icons/fa6";
 
 function GetStarted() {
+  const notify = () => toast.error("Invelid username and Password.", {
+    theme: "dark",
+    className: "bg-red-600 font-bold text-red-600",
+  });
+
   return (
     <div className="bg-[#030712] w-full min-h-[90vh]">
       <section class="text-gray-400  body-font">
@@ -19,7 +24,9 @@ function GetStarted() {
               Welcome to Smarter AI Attendance Management
             </h1>
             <p class="lg:w-2/3 mx-auto leading-relaxed text-[18px]">
-            Eliminate manual roll calls with AI-powered facial recognition, real-time tracking, and automated insights. Our system adapts to students, faculty, and administrators alike.
+              Eliminate manual roll calls with AI-powered facial recognition, real-time
+              tracking, and automated insights. Our system adapts to students, faculty,
+              and administrators alike.
             </p>
           </div>
           <div class="flex flex-wrap -m-4 text-center justify-center items-center">
@@ -33,7 +40,7 @@ function GetStarted() {
             </div>
             <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
               <div class="border-2 border-gray-800 px-4 py-6 rounded-lg flex flex-col gap-y-4 justify-center items-center">
-                <FaChalkboardTeacher size={48} color="#155dfc"/>
+                <FaChalkboardTeacher size={48} color="#155dfc" />
                 <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
                   Sign in as Institute Teacher
                 </button>
@@ -41,7 +48,7 @@ function GetStarted() {
             </div>
             <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
               <div class="border-2 border-gray-800 px-4 py-6 rounded-lg flex flex-col gap-y-4 justify-center items-center">
-                <FaUniversity size={48} color="#155dfc"/>
+                <FaUniversity size={48} color="#155dfc" />
                 <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
                   Sign in as Institute
                 </button>
@@ -50,6 +57,7 @@ function GetStarted() {
           </div>
         </div>
       </section>
+      
     </div>
   );
 }

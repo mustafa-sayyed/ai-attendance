@@ -8,7 +8,8 @@ import HowItWorks from "./HowItWorks";
 import Navbar from "./Navbar";
 import Pricing from "./Pricing";
 import Signin from "./Signin";
+import RegistrationForm from "./test";
+import ForgotPassword from "./ForgotPassword";
 
 
-
-export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin };
+export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin, RegistrationForm, ForgotPassword };

@@ -1,5 +1,5 @@
 import React from "react";
-import { About, Contact, HowItWorks, Navbar, Pricing, Signin } from "./components";
+import { About, Contact, ForgotPassword, HowItWorks, Navbar, Pricing, RegistrationForm, Signin } from "./components";
 import { GetStarted, Home } from "./pages";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -16,6 +16,8 @@ function App() {
           <Route path="/about" element={<About />}/>
           <Route path="/how-it-works" element={<HowItWorks />}/>
           <Route path="/signin" element={<Signin />}/>
+          <Route path="/test" element={<RegistrationForm />}/>
+          <Route path="/forgot-password" element={<ForgotPassword />}/>
 
         </Routes>
       </div>

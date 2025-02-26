@@ -126,7 +126,7 @@ export default function Contact() {
                   <input
                     type="email"
                     placeholder="johndoe@example.com"
-                    class="block w-full px-5 py-3 mt-2  bg-white border rounded-md dark:bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
+                    class="block w-full px-5 py-3 mt-2 border rounded-md bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
                   />
                 </div>
 
@@ -135,7 +135,7 @@ export default function Contact() {
                     Message
                   </label>
                   <textarea
-                    class="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-48 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
+                    class="block w-full h-32 px-5 py-3 mt-2 placeholder-gray-400 border rounded-md md:h-48 bg-gray-900 text-gray-300 border-gray-600 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
                     placeholder="Message"></textarea>
                 </div>
 
