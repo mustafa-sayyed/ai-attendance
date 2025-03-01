@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  FaUsers,
-  FaCog,
-  FaUserTag,
-  FaFileAlt,
-  FaUniversity
-} from "react-icons/fa";
+import institute from "../assets/institute.svg";
+import calendar from "../assets/calendar.svg";
+import { FaUsers, FaCog, FaUserTag, FaFileAlt } from "react-icons/fa";
 
 function HowItWorks() {
   return (
@@ -20,7 +16,7 @@ function HowItWorks() {
           </div>
           <div class="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
             <div class="flex-shrink-0 w-24 h-24 bg-gray-800 text-blue-600 rounded-full inline-flex items-center justify-center">
-              <img src="src/assets/institute.svg" alt="Institute image" />
+              <img src={institute} alt="Institute image" />
             </div>
             <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
               <h2 class="font-medium title-font text-white mb-1 text-xl">
@@ -114,7 +110,7 @@ function HowItWorks() {
           </div>
           <div class="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
             <div class="flex-shrink-0 w-24 h-24 bg-gray-800 text-blue-600 rounded-full inline-flex items-center justify-center">
-              <img src="src/assets/attendance-track.svg" alt="" />
+              <img src={calendar} alt="" />
             </div>
             <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
               <h2 class="font-medium title-font text-white mb-1 text-xl">
