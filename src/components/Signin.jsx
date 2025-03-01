@@ -97,7 +97,7 @@ function Signin() {
         <p className="text-center text-gray-400">
           Don't have an account?
           <a
-            href="#"
+            href="/get-started"
             className="whitespace-nowrap font-semibold text-gray-200 hover:underline ml-1">
             Sign up
           </a>

@@ -10,10 +10,11 @@ import {
 import { FaChalkboardUser, FaPersonChalkboard, FaUserGear } from "react-icons/fa6";
 
 function GetStarted() {
-  const notify = () => toast.error("Invelid username and Password.", {
-    theme: "dark",
-    className: "bg-red-600 font-bold text-red-600",
-  });
+  const notify = () =>
+    toast.error("Invelid username and Password.", {
+      theme: "dark",
+      className: "bg-red-600 font-bold text-red-600",
+    });
 
   return (
     <div className="bg-[#030712] w-full min-h-[90vh]">
@@ -34,7 +35,7 @@ function GetStarted() {
               <div class="border-2 border-gray-800 px-4 py-6 rounded-lg flex flex-col gap-y-4 justify-center items-center">
                 <FaUserGraduate size={48} color="#155dfc" />
                 <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-                  Sign in as Student
+                  <a href="/student/signup">Sign in as Student</a>
                 </button>
               </div>
             </div>
@@ -42,7 +43,7 @@ function GetStarted() {
               <div class="border-2 border-gray-800 px-4 py-6 rounded-lg flex flex-col gap-y-4 justify-center items-center">
                 <FaChalkboardTeacher size={48} color="#155dfc" />
                 <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-                  Sign in as Institute Teacher
+                  <a href="/teacher/signup">Sign in as Institute Teacher</a>
                 </button>
               </div>
             </div>
@@ -50,14 +51,13 @@ function GetStarted() {
               <div class="border-2 border-gray-800 px-4 py-6 rounded-lg flex flex-col gap-y-4 justify-center items-center">
                 <FaUniversity size={48} color="#155dfc" />
                 <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-                  Sign in as Institute
+                  <a href="/institute/signup">Sign in as Institute</a>
                 </button>
               </div>
             </div>
           </div>
         </div>
       </section>
-      
     </div>
   );
 }

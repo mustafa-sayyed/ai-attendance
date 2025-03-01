@@ -10,6 +10,8 @@ import Pricing from "./Pricing";
 import Signin from "./Signin";
 import RegistrationForm from "./test";
 import ForgotPassword from "./ForgotPassword";
+import StudentSignup from "./StudentSignup.jsx";
+import TeacherSignup from "./TeacherSignup.jsx";
 
 
-export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin, RegistrationForm, ForgotPassword };
+export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin, RegistrationForm, ForgotPassword, StudentSignup, TeacherSignup };

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FiKey, FiMail } from "react-icons/fi";
+import { useState } from "react";
+import { FiKey } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 
 const ForgotPassword = () => {

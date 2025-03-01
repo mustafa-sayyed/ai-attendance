@@ -1,5 +1,16 @@
 import React from "react";
-import { About, Contact, ForgotPassword, HowItWorks, Navbar, Pricing, RegistrationForm, Signin } from "./components";
+import {
+  About,
+  Contact,
+  ForgotPassword,
+  HowItWorks,
+  Navbar,
+  Pricing,
+  RegistrationForm,
+  Signin,
+  StudentSignup,
+  TeacherSignup,
+} from "./components";
 import { GetStarted, Home } from "./pages";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
@@ -13,12 +24,13 @@ function App() {
           <Route path="/get-started" element={<GetStarted />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact-us" element={<Contact />} />
-          <Route path="/about" element={<About />}/>
-          <Route path="/how-it-works" element={<HowItWorks />}/>
-          <Route path="/signin" element={<Signin />}/>
-          <Route path="/test" element={<RegistrationForm />}/>
-          <Route path="/forgot-password" element={<ForgotPassword />}/>
-
+          <Route path="/about" element={<About />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/test" element={<RegistrationForm />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/student/signup" element={<StudentSignup />} />
+          <Route path="/teacher/signup" element={<TeacherSignup />} />
         </Routes>
       </div>
     </BrowserRouter>
