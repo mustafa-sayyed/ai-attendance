@@ -89,7 +89,7 @@ function Signin() {
           Forgot your password?
         </a>
         <button
-          className="shrink-0 inline-block w-full rounded-lg bg-[#155dfc] py-2.5 font-bold text-white cursor-pointer hover:bg-[#1447e6]"
+          className="shrink-0 inline-block w-full rounded-lg bg-blue-600 py-2.5 font-bold text-white cursor-pointer hover:bg-blue-700"
           type="submit">
           {loading ? <span className="loading loading-spinner"></span> : "Sign in"}
         </button>

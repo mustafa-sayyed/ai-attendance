@@ -1,23 +1,22 @@
-import React from "react";
 import { FaFacebook, FaXTwitter, FaGithub, FaLinkedinIn, } from "react-icons/fa6";
 
 export default function Contact() {
   return (
-    <section class=" bg-gradient-to-tr to-[#030712] ">
-      <div class="container flex flex-col px-6 py-14 mx-auto max-w-7xl">
-        <div class="flex-1 lg:flex lg:items-center lg:-mx-6 ">
-          <div class="text-white lg:w-1/2 lg:mx-6">
-            <h1 class="text-2xl font-semibold capitalize lg:text-4xl">Get a quote</h1>
+    <section className=" bg-gradient-to-tr to-[#030712] ">
+      <div className="container flex flex-col px-6 py-14 mx-auto max-w-7xl">
+        <div className="flex-1 lg:flex lg:items-center lg:-mx-6 ">
+          <div className="text-white lg:w-1/2 lg:mx-6">
+            <h1 className="text-2xl font-semibold capitalize lg:text-4xl">Get a quote</h1>
 
-            <p class="max-w-xl mt-6">
+            <p className="max-w-xl mt-6">
               Ask us everything and we would love to hear from you
             </p>
 
-            <div class="mt-6 space-y-8 md:mt-8">
-              <p class="flex items-start -mx-2">
+            <div className="mt-6 space-y-8 md:mt-8">
+              <p className="flex items-start -mx-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="w-6 h-6 mx-2 text-white"
+                  className="w-6 h-6 mx-2 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -34,15 +33,15 @@ export default function Contact() {
                   />
                 </svg>
 
-                <span class="mx-2 text-white truncate w-72">
+                <span className="mx-2 text-white truncate w-72">
                   Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522
                 </span>
               </p>
 
-              <p class="flex items-start -mx-2">
+              <p className="flex items-start -mx-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="w-6 h-6 mx-2 text-white"
+                  className="w-6 h-6 mx-2 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -54,13 +53,13 @@ export default function Contact() {
                   />
                 </svg>
 
-                <span class="mx-2 text-white truncate w-72">(257) 563-7401</span>
+                <span className="mx-2 text-white truncate w-72">(257) 563-7401</span>
               </p>
 
-              <p class="flex items-start -mx-2">
+              <p className="flex items-start -mx-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="w-6 h-6 mx-2 text-white"
+                  className="w-6 h-6 mx-2 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -72,34 +71,34 @@ export default function Contact() {
                   />
                 </svg>
 
-                <span class="mx-2 text-white truncate w-72">acb@example.com</span>
+                <span className="mx-2 text-white truncate w-72">acb@example.com</span>
               </p>
             </div>
 
-            <div class="mt-6 md:mt-8">
-              <h3 class="text-gray-300 ">Follow us</h3>
+            <div className="mt-6 md:mt-8">
+              <h3 className="text-gray-300 ">Follow us</h3>
 
-              <div class="flex mt-4 -mx-1.5 ">
+              <div className="flex mt-4 -mx-1.5 ">
                 <a
-                  class="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
+                  className="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
                   href="#">
                   <FaXTwitter size={30}/>
                 </a>
 
                 <a
-                  class="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
+                  className="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
                   href="#">
                   <FaGithub size={30}/>
                 </a>
 
                 <a
-                  class="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
+                  className="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
                   href="#">
                   <FaLinkedinIn size={30}/>
                 </a>
 
                 <a
-                  class="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
+                  className="mx-1.5 text-gray-700 transition hover:text-gray-300 duration-300 transform"
                   href="#">
                   <FaFacebook size={30}/>
                 </a>
@@ -107,39 +106,39 @@ export default function Contact() {
             </div>
           </div>
 
-          <div class="mt-8 lg:w-1/2 lg:mx-6">
-            <div class="w-full px-8 py-10 mx-auto overflow-hidden shadow-2xl rounded-xl border lg:max-w-xl">
-              <h1 class="text-2xl font-medium text-gray-200">Contact form</h1>
+          <div className="mt-8 lg:w-1/2 lg:mx-6">
+            <div className="w-full px-8 py-10 mx-auto overflow-hidden shadow-2xl rounded-xl border lg:max-w-xl">
+              <h1 className="text-2xl font-medium text-gray-200">Contact form</h1>
 
-              <form class="mt-4">
-                <div class="flex-1">
-                  <label class="block mb-2 text-sm text-gray-200">Full Name</label>
+              <form className="mt-4">
+                <div className="flex-1">
+                  <label className="block mb-2 text-sm text-gray-200">Full Name</label>
                   <input
                     type="text"
                     placeholder="John Doe"
-                    class="block w-full px-5 py-3 mt-2 border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
+                    className="block w-full px-5 py-3 mt-2 border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
                   />
                 </div>
 
-                <div class="flex-1 mt-6">
-                  <label class="block mb-2 text-sm text-gray-200">Email address</label>
+                <div className="flex-1 mt-6">
+                  <label className="block mb-2 text-sm text-gray-200">Email address</label>
                   <input
                     type="email"
                     placeholder="johndoe@example.com"
-                    class="block w-full px-5 py-3 mt-2 border rounded-md bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
+                    className="block w-full px-5 py-3 mt-2 border rounded-md bg-gray-900 text-gray-300 border-gray-600 focus:border-blue-400 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
                   />
                 </div>
 
-                <div class="w-full mt-6">
-                  <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                <div className="w-full mt-6">
+                  <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
                     Message
                   </label>
                   <textarea
-                    class="block w-full h-32 px-5 py-3 mt-2 placeholder-gray-400 border rounded-md md:h-48 bg-gray-900 text-gray-300 border-gray-600 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
+                    className="block w-full h-32 px-5 py-3 mt-2 placeholder-gray-400 border rounded-md md:h-48 bg-gray-900 text-gray-300 border-gray-600 focus:ring-blue-600 focus:ring-opacity-40 dark:focus:border-blue-600 focus:outline-none focus:ring"
                     placeholder="Message"></textarea>
                 </div>
 
-                <button class="w-full px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50 cursor-pointer">
+                <button className="w-full px-6 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50 cursor-pointer">
                   get in touch
                 </button>
               </form>

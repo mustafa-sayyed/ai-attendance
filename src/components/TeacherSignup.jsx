@@ -2,20 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  FiUser,
-  FiMail,
-  FiLock,
-  FiUpload,
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
-
-const departments = ["Computer Science", "Mathematics", "Physics", "Chemistry"];
-const classes = ["Class A", "Class B", "Class C"];
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 function TeacherSignup() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const schema = [
     yup.object({
@@ -39,16 +30,17 @@ function TeacherSignup() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     trigger,
-  } = useForm({ resolver: yupResolver(currentSchema), mode: "onChange" });
+    setFocus,
+  } = useForm({
+    resolver: yupResolver(currentSchema),
+    mode: "onChange",
+  });
 
   const handleNext = async () => {
     const isValid = await trigger(); // Validate all fields in the current step
     console.log(currentStep, isValid);
     if (isValid && currentStep < 2) {
-      console.log(true);
-
       setCurrentStep(currentStep + 1);
     }
   };
@@ -57,16 +49,17 @@ function TeacherSignup() {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const onSubmit = (data) => {
+  const submitHandler = (data) => {
+    setLoading(true);
     console.log("Form Data Submitted:", data);
     alert("Registration Successful!");
   };
 
+  React.useEffect(() => setFocus("collegeName"), []);
+
   return (
     <div className="flex h-[90vh] w-full justify-center items-center overflow-hidden px-2 bg-[#030712]">
-      <form
-        className="relative flex w-[400px] flex-col space-y-5 rounded-lg border border-gray-700 bg-[#111827] px-6 py-10 shadow-xl sm:mx-auto"
-        onSubmit={handleSubmit(onSubmit)}>
+      <form className="relative flex w-[400px] flex-col space-y-5 rounded-lg border border-gray-700 bg-[#111827] px-6 py-10 shadow-xl sm:mx-auto">
         {/* Header */}
         <div className="mx-auto mb-4 space-y-3 text-center">
           <h1 className="text-3xl font-bold text-gray-200">Register</h1>
@@ -225,21 +218,22 @@ function TeacherSignup() {
             type="button"
             onClick={handlePrev}
             disabled={currentStep === 1}
-            className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition disabled:opacity-50 cursor-pointer flex justify-center items-center">
+            className="w-[120px] px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition disabled:opacity-50 cursor-pointer flex justify-center items-center">
             <FiChevronLeft className="inline-block mr-2" /> Previous
           </button>
-          {currentStep < 4 ? (
+          {currentStep == 1 ? (
             <button
               type="button"
               onClick={handleNext}
-              className="px-4 py-2 rounded-lg bg-[#155dfc] text-white hover:bg-[#1447e6] transition cursor-pointer flex justify-center items-center">
+              className="w-[120px] px-4 py-2 rounded-lg bg-[#155dfc] text-white hover:bg-[#1447e6] transition cursor-pointer flex justify-center items-center">
               Next <FiChevronRight className="inline-block ml-2" />
             </button>
           ) : (
             <button
-              type="submit"
-              className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition cursor-pointer flex justify-center items-center">
-              Submit
+              type="button"
+              onClick={handleSubmit(submitHandler)}
+              className=" w-[120px] px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer flex justify-center items-center">
+              {loading ? <span className="loading loading-spinner"></span> : "Submit"}
             </button>
           )}
         </div>

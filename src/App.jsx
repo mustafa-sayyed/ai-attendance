@@ -4,9 +4,9 @@ import {
   Contact,
   ForgotPassword,
   HowItWorks,
+  InstituteSignup,
   Navbar,
   Pricing,
-  RegistrationForm,
   Signin,
   StudentSignup,
   TeacherSignup,
@@ -27,10 +27,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/test" element={<RegistrationForm />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/student/signup" element={<StudentSignup />} />
           <Route path="/teacher/signup" element={<TeacherSignup />} />
+          <Route path="/institute/signup" element={<InstituteSignup />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -2,62 +2,62 @@ import React from "react";
 
 function Pricing() {
   return (
-    <section class="relative z-10 overflow-hidden bg-dark pt-16 pb-12 lg:pt-[120px] lg:pb-[90px]">
-      <div class="container mx-auto max-w-6xl px-8 sm:px-0">
-        <div class="-mx-4 flex flex-wrap">
-          <div class="w-full px-4">
-            <div class="mx-auto mb-[60px] max-w-[510px] text-center">
-              <h2 class="mb-3 text-3xl leading-[1.208] font-bold text-dark text-white sm:text-4xl md:text-[40px]">
+    <section className="relative z-10 overflow-hidden bg-dark pt-16 pb-12 lg:pt-[120px] lg:pb-[90px]">
+      <div className="container mx-auto max-w-6xl px-8 sm:px-0">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4">
+            <div className="mx-auto mb-[60px] max-w-[510px] text-center">
+              <h2 className="mb-3 text-3xl leading-[1.208] font-bold text-dark text-white sm:text-4xl md:text-[40px]">
                 Our Pricing Plan
               </h2>
-              <p class="text-base text-body-color text-dark-6">
+              <p className="text-base text-body-color text-dark-6">
                 There are many variations of passages of Lorem Ipsum available
                 but the majority have suffered alteration in some form.
               </p>
             </div>
           </div>
         </div>
-        <div class="-mx-4 flex flex-wrap justify-center">
-          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
-            <div class="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
-              <span class="mb-3 block text-lg font-semibold text-blue-600">
+        <div className="-mx-4 flex flex-wrap justify-center">
+          <div className="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div className="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
+              <span className="mb-3 block text-lg font-semibold text-blue-600">
                 Personal
               </span>
-              <h2 class="mb-5 text-[42px] font-bold text-dark text-white">
+              <h2 className="mb-5 text-[42px] font-bold text-dark text-white">
                 <span>$59</span>
-                <span class="text-base font-medium text-body-color text-dark-6">
+                <span className="text-base font-medium text-body-color text-dark-6">
                   / year
                 </span>
               </h2>
-              <p class="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
+              <p className="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
                 Perfect for using in a personal website or a client project.
               </p>
-              <div class="mb-9 flex flex-col gap-[14px]">
-                <p class="text-base text-body-color text-dark-6">1 User</p>
-                <p class="text-base text-body-color text-dark-6">
+              <div className="mb-9 flex flex-col gap-[14px]">
+                <p className="text-base text-body-color text-dark-6">1 User</p>
+                <p className="text-base text-body-color text-dark-6">
                   All UI components
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Lifetime access
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Free updates
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Use on 1 (one) project
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   3 Months support
                 </p>
               </div>
               <a
                 href="/"
-                class="block w-full rounded-md border border-stroke border-dark-3 bg-transparent p-3 text-center text-base font-medium text-blue-600 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+                className="block w-full rounded-md border border-stroke border-dark-3 bg-transparent p-3 text-center text-base font-medium text-blue-600 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
               >
                 Choose Personal
               </a>
               <div>
-                <span class="absolute right-0 top-7 z-[-1] ">
+                <span className="absolute right-0 top-7 z-[-1] ">
                   <svg
                     width="77"
                     height="172"
@@ -85,7 +85,7 @@ function Pricing() {
                     </defs>
                   </svg>
                 </span>
-                <span class="absolute right-4 top-4 z-[-1]">
+                <span className="absolute right-4 top-4 z-[-1]">
                   <svg
                     width="41"
                     height="89"
@@ -322,48 +322,48 @@ function Pricing() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
-            <div class="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
-              <span class="mb-3 block text-lg font-semibold text-blue-600 ">
+          <div className="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div className="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
+              <span className="mb-3 block text-lg font-semibold text-blue-600 ">
                 Business
               </span>
-              <h2 class="mb-5 text-[42px] font-bold text-dark text-white">
+              <h2 className="mb-5 text-[42px] font-bold text-dark text-white">
                 <span>$199</span>
-                <span class="text-base font-medium text-body-color text-dark-6">
+                <span className="text-base font-medium text-body-color text-dark-6">
                   / year
                 </span>
               </h2>
-              <p class="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
+              <p className="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
                 Perfect for using in a Business website or a client project.
               </p>
-              <div class="mb-9 flex flex-col gap-[14px]">
-                <p class="text-base text-body-color text-dark-6">
+              <div className="mb-9 flex flex-col gap-[14px]">
+                <p className="text-base text-body-color text-dark-6">
                   5 Users
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   All UI components
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Lifetime access
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Free updates
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Use on 3 (Three) project
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   4 Months support
                 </p>
               </div>
               <a
                 href="#"
-                class="block w-full rounded-md border border-blue-600 bg-blue-600 p-3 text-center text-base font-medium text-white transition hover:bg-opacity-90"
+                className="block w-full rounded-md border border-blue-600 bg-blue-600 p-3 text-center text-base font-medium text-white transition hover:bg-opacity-90"
               >
                 Choose Business
               </a>
               <div>
-                <span class="absolute right-0 top-7 z-[-1]">
+                <span className="absolute right-0 top-7 z-[-1]">
                   <svg
                     width="77"
                     height="172"
@@ -391,7 +391,7 @@ function Pricing() {
                     </defs>
                   </svg>
                 </span>
-                <span class="absolute right-4 top-4 z-[-1]">
+                <span className="absolute right-4 top-4 z-[-1]">
                   <svg
                     width="41"
                     height="89"
@@ -628,48 +628,48 @@ function Pricing() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 lg:w-1/3">
-            <div class="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
-              <span class="mb-3 block text-lg font-semibold text-blue-600">
+          <div className="w-full px-4 md:w-1/2 lg:w-1/3">
+            <div className="relative z-10 mb-10 overflow-hidden rounded-[10px] border-2 border-stroke border-dark-3 bg-dark-2 py-10 px-8 shadow-pricing sm:p-12 lg:py-10 lg:px-6 xl:p-[50px]">
+              <span className="mb-3 block text-lg font-semibold text-blue-600">
                 Professional
               </span>
-              <h2 class="mb-5 text-[42px] font-bold text-dark text-white">
+              <h2 className="mb-5 text-[42px] font-bold text-dark text-white">
                 <span>$256</span>
-                <span class="text-base font-medium text-body-color text-dark-6">
+                <span className="text-base font-medium text-body-color text-dark-6">
                   / year
                 </span>
               </h2>
-              <p class="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
+              <p className="mb-8 border-b border-stroke border-dark-3 pb-8 text-base text-body-color text-dark-6">
                 Perfect for using in a Professional website or a client project.
               </p>
-              <div class="mb-9 flex flex-col gap-[14px]">
-                <p class="text-base text-body-color text-dark-6">
+              <div className="mb-9 flex flex-col gap-[14px]">
+                <p className="text-base text-body-color text-dark-6">
                   Unlimited Users
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   All UI components
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Lifetime access
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Free updates
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   Use on Unlimited project
                 </p>
-                <p class="text-base text-body-color text-dark-6">
+                <p className="text-base text-body-color text-dark-6">
                   12 Months support
                 </p>
               </div>
               <a
                 href="/"
-                class="block w-full rounded-md border border-stroke border-dark-3 bg-transparent p-3 text-center text-base font-medium text-blue-600 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+                className="block w-full rounded-md border border-stroke border-dark-3 bg-transparent p-3 text-center text-base font-medium text-blue-600 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
               >
                 Choose Professional
               </a>
               <div>
-                <span class="absolute right-0 top-7 z-[-1]">
+                <span className="absolute right-0 top-7 z-[-1]">
                   <svg
                     width="77"
                     height="172"
@@ -697,7 +697,7 @@ function Pricing() {
                     </defs>
                   </svg>
                 </span>
-                <span class="absolute right-4 top-4 z-[-1]">
+                <span className="absolute right-4 top-4 z-[-1]">
                   <svg
                     width="41"
                     height="89"

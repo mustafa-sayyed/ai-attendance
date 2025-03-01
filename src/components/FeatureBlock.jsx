@@ -1,5 +1,4 @@
-import React from "react";
-import Calendar from "../assets/image.png";
+import Calendar from "../assets/calendar.png";
 import policy from "../assets/policy.png";
 import location from "../assets/location.png";
 import face from "../assets/face.png";

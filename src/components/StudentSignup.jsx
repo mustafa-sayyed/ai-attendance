@@ -2,14 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  FiUser,
-  FiMail,
-  FiLock,
-  FiUpload,
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
+import { FiUpload, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa";
 
 const departments = ["Computer Science", "Mathematics", "Physics", "Chemistry"];
 const classes = ["Class A", "Class B", "Class C"];
@@ -17,6 +11,7 @@ const classes = ["Class A", "Class B", "Class C"];
 function StudentSignup() {
   const [currentStep, setCurrentStep] = useState(1);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const schema = [
     yup.object({
@@ -48,6 +43,7 @@ function StudentSignup() {
     handleSubmit,
     formState: { errors },
     setValue,
+    setFocus,
     trigger,
   } = useForm({ resolver: yupResolver(currentSchema), mode: "onChange" });
 
@@ -65,7 +61,8 @@ function StudentSignup() {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const onSubmit = (data) => {
+  const submitHandler = (data) => {
+    setLoading(true);
     console.log("Form Data Submitted:", data);
     alert("Registration Successful!");
   };
@@ -76,17 +73,19 @@ function StudentSignup() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        console.log(reader);
+
         setPhotoPreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  React.useEffect(() => setFocus("collegeName"), []);
+
   return (
     <div className="flex h-[90vh] w-full justify-center items-center overflow-hidden px-2 bg-[#030712]">
-      <form
-        className="relative flex w-[400px] flex-col space-y-5 rounded-lg border border-gray-700 bg-[#111827] px-6 py-10 shadow-xl sm:mx-auto"
-        onSubmit={handleSubmit(onSubmit)}>
+      <form className="relative flex w-[400px] flex-col space-y-5 rounded-lg border border-gray-700 bg-[#111827] px-6 py-10 shadow-xl sm:mx-auto">
         {/* Header */}
         <div className="mx-auto mb-4 space-y-3 text-center">
           <h1 className="text-3xl font-bold text-gray-200">Register</h1>
@@ -339,12 +338,16 @@ function StudentSignup() {
           <div className="space-y-5">
             <div className="mb-5 text-center">
               <div className="shadow-inset relative mx-auto mb-5 h-32 w-32 rounded-full border bg-gray-100">
-                <img
-                  id="image"
-                  className="h-32 w-full rounded-full object-cover"
-                  src={photoPreview || "https://via.placeholder.com/128"}
-                  alt="Profile Preview"
-                />
+                {photoPreview ? (
+                  <img
+                    id="image"
+                    className="h-32 w-full rounded-full object-cover"
+                    src={photoPreview}
+                    alt="Profile Preview"
+                  />
+                ) : (
+                  <FaUserCircle className="h-32 w-full rounded-full object-cover text-[#111827]" />
+                )}
               </div>
               <label
                 htmlFor="fileInput"
@@ -376,21 +379,22 @@ function StudentSignup() {
             type="button"
             onClick={handlePrev}
             disabled={currentStep === 1}
-            className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition disabled:opacity-50 cursor-pointer flex justify-center items-center">
+            className="w-[120px] px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition disabled:opacity-50 cursor-pointer flex justify-center items-center">
             <FiChevronLeft className="inline-block mr-2" /> Previous
           </button>
           {currentStep < 4 ? (
             <button
               type="button"
               onClick={handleNext}
-              className="px-4 py-2 rounded-lg bg-[#155dfc] text-white hover:bg-[#1447e6] transition cursor-pointer flex justify-center items-center">
+              className="w-[120px] px-4 py-2 rounded-lg bg-[#155dfc] text-white hover:bg-[#1447e6] transition cursor-pointer flex justify-center items-center">
               Next <FiChevronRight className="inline-block ml-2" />
             </button>
           ) : (
             <button
-              type="submit"
-              className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition cursor-pointer flex justify-center items-center">
-              Submit
+              type="button"
+              onClick={handleSubmit(submitHandler)}
+              className="w-[120px] px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer flex justify-center items-center">
+              {loading ? <span className="loading loading-spinner"></span> : "Submit"}
             </button>
           )}
         </div>

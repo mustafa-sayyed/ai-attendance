@@ -8,10 +8,10 @@ import HowItWorks from "./HowItWorks";
 import Navbar from "./Navbar";
 import Pricing from "./Pricing";
 import Signin from "./Signin";
-import RegistrationForm from "./test";
 import ForgotPassword from "./ForgotPassword";
 import StudentSignup from "./StudentSignup.jsx";
 import TeacherSignup from "./TeacherSignup.jsx";
+import InstituteSignup from "./InstituteSignup.jsx";
 
 
-export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin, RegistrationForm, ForgotPassword, StudentSignup, TeacherSignup };
+export { Navbar, Hero, FeatureBlock, Footer, CTA, Pricing, Contact, About, HowItWorks, Signin, ForgotPassword, StudentSignup, TeacherSignup, InstituteSignup };
