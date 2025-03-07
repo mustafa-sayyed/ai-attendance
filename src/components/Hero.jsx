@@ -1,5 +1,5 @@
 import React from "react";
-import image1 from "../assets/cctv-class.png";
+import facedetect from "../assets/cctv-class.png";
 
 function Hero() {
   return (
@@ -27,7 +27,7 @@ function Hero() {
           </a>
         </div>
         <div>
-          <img src={image1} alt="" className="w-xl sm:w-3xl lg:w-6xl" />
+          <img src={facedetect} alt="" className="w-xl sm:w-3xl lg:w-6xl" />
         </div>
       </div>
     </div>

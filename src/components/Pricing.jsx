@@ -2,7 +2,7 @@ import React from "react";
 
 function Pricing() {
   return (
-    <section className="relative z-10 overflow-hidden bg-dark pt-16 pb-12 lg:pt-[120px] lg:pb-[90px]">
+    <section className="relative z-10 overflow-hidden bg-dark pt-16 pb-12 lg:pt-[120px] lg:pb-[90px] bg-[#030712]">
       <div className="container mx-auto max-w-6xl px-8 sm:px-0">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">

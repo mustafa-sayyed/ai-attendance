@@ -85,7 +85,9 @@ function Signin() {
           </div>
           <p className="text-xs ml-1 mt-1 text-red-400">{errors.password?.message}</p>
         </div>
-        <a className="text-right text-xs text-gray-400 hover:underline -mt-3" href="/forgot-password">
+        <a
+          className="text-right text-xs text-gray-400 hover:underline -mt-3"
+          href="/forgot-password">
           Forgot your password?
         </a>
         <button
@@ -108,6 +110,7 @@ function Signin() {
         position="top-right"
         autoClose={4000}
         closeButton="true"
+        draggable="true"
       />
     </div>
   );

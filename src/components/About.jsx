@@ -1,7 +1,7 @@
 
 function About() {
   return (
-    <div className="min-h-[90vh] text-white text-center">
+    <div className="min-h-[90vh] text-white text-center bg-[#030712]">
       <div className="py-12 md:max-w-4xl mx-auto">
         <h1 className="text-3xl">About the Product</h1>
         <div className="flex flex-col sm:flex-row justify-center items-center my-10 gap-10 px-10">

@@ -2,7 +2,7 @@ import { FaFacebook, FaXTwitter, FaGithub, FaLinkedinIn, } from "react-icons/fa6
 
 export default function Contact() {
   return (
-    <section className=" bg-gradient-to-tr to-[#030712] ">
+    <section className=" bg-gradient-to-tr from-[#030712] to-[#030712] ">
       <div className="container flex flex-col px-6 py-14 mx-auto max-w-7xl">
         <div className="flex-1 lg:flex lg:items-center lg:-mx-6 ">
           <div className="text-white lg:w-1/2 lg:mx-6">
