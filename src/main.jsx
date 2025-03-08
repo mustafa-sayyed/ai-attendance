@@ -6,12 +6,16 @@ import { AppWrapper } from "./components/common/PageMeta.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import "./index.css";
 import App from "./App.jsx";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <AppWrapper>
+        <Provider store={store}>
           <App />
+        </Provider>
       </AppWrapper>
     </ThemeProvider>
   </StrictMode>

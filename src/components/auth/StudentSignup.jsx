@@ -4,14 +4,43 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FiUpload, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
+import { IKContext, IKUpload } from "imagekitio-react";
+import axios from "axios";
 
-const departments = ["Computer Science", "Mathematics", "Physics", "Chemistry"];
-const classes = ["Class A", "Class B", "Class C"];
+const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URL;
+const publicKey = import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY;
+const url = import.meta.env.VITE_IMAGEKIT_SERVER_URL;
+console.log(url, urlEndpoint, publicKey);
+
+const authenticator = async () => {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    const { signature, expire, token } = data;
+    console.log(data);
+
+    return { signature, expire, token };
+  } catch (error) {
+    throw new Error(`ImageKit Authentication request failed: ${error.message}`);
+  }
+};
 
 function StudentSignup() {
+  const [colleges, setColleges] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [classes, setClasses] = useState([]);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
 
   const schema = [
     yup.object({
@@ -32,7 +61,7 @@ function StudentSignup() {
         .required("Password is required"),
     }),
     yup.object({
-      photo: yup.mixed().required("Photo is required"),
+      photo: yup.string().required("Photo is required"),
     }),
   ];
 
@@ -43,13 +72,13 @@ function StudentSignup() {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     setFocus,
     trigger,
   } = useForm({ resolver: yupResolver(currentSchema), mode: "onChange" });
 
   const handleNext = async () => {
     const isValid = await trigger(); // Validate all fields in the current step
-    console.log(currentStep, isValid);
     if (isValid && currentStep < 4) {
       console.log(true);
 
@@ -62,14 +91,15 @@ function StudentSignup() {
   };
 
   const submitHandler = (data) => {
+    console.log(JSON.stringify(data));
     setLoading(true);
     console.log("Form Data Submitted:", data);
     alert("Registration Successful!");
+    // handleNext();
   };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-    setValue("photo", file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -81,7 +111,22 @@ function StudentSignup() {
     }
   };
 
-  React.useEffect(() => setFocus("collegeName"), []);
+  const handleImageUpload = (image) => {
+    setValue("photo", image.url);
+    console.log("Image Uploaded");
+  };
+
+  React.useEffect(() => {
+    setFocus("collegeName");
+    axios
+      .get("http://localhost:3000/api/v1/institute/")
+      .then((res) => {
+        const institutes = res.data.institutes.map((clg) => ({name: clg.name, id: clg._id}));
+        setColleges(institutes);
+        console.log(res, institutes);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <div className="flex h-[90vh] w-full justify-center items-center overflow-hidden px-2 bg-[#030712]">
@@ -109,21 +154,30 @@ function StudentSignup() {
           <div className="space-y-5">
             <div>
               <div className="relative">
-                <input
-                  type="text"
-                  id="collegeName"
+                <select
+                  id="college"
                   {...register("collegeName")}
-                  className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
+                  className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-[#111827] px-4 py-3 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
                     errors.collegeName ? "border-red-400 focus:border-red-400" : ""
-                  }`}
-                  placeholder=" "
-                />
+                  }`}>
+                  <option value="" className="text-gray-400">
+                    Select College
+                  </option>
+                  {colleges?.map((clg, index) => (
+                    <option
+                      key={index}
+                      value={clg.name}
+                      className="bg-[#111827] text-gray-200">
+                      {clg.name}
+                    </option>
+                  ))}
+                </select>
                 <label
-                  htmlFor="collegeName"
+                  htmlFor="college"
                   className={`absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-[#111827] px-2 text-sm text-gray-400 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-[#155dfc] ${
                     errors.collegeName ? "text-red-400 peer-focus:text-red-400" : ""
                   }`}>
-                  College Name
+                  College
                 </label>
               </div>
               {errors.collegeName && (
@@ -358,14 +412,45 @@ function StudentSignup() {
               <div className="mx-auto mt-2 w-48 text-center text-xs text-gray-500">
                 Click to add profile picture
               </div>
-              <input
-                name="photo"
-                id="fileInput"
-                accept="image/*"
-                className="hidden"
-                type="file"
-                onChange={handlePhotoChange}
-              />
+              <IKContext
+                publicKey={publicKey}
+                urlEndpoint={urlEndpoint}
+                authenticator={authenticator}>
+                <IKUpload
+                  fileName="test-upload.png"
+                  onError={(e) => console.log("Error", e)}
+                  onUploadProgress={(e) =>
+                    setImageUploadProgress(((e.loaded / e.total) * 100).toFixed(0))
+                  }
+                  onSuccess={handleImageUpload}
+                  onUploadStart={() => setIsImageUploading(true)}
+                  id="fileInput"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                />
+              </IKContext>
+              {isImageUploading && (
+                <div>
+                  <div className="mb-2 mt-3 flex justify-between items-center">
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+                      Image is Uploading.....
+                    </h3>
+                    <span className="text-sm text-gray-800 dark:text-white">
+                      {imageUploadProgress}%
+                    </span>
+                  </div>
+                  <div
+                    className="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700"
+                    role="progressbar"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100">
+                    <div
+                      className="flex flex-col justify-center rounded-full overflow-hidden text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-700"
+                      style={{ width: `${imageUploadProgress}%` }}></div>
+                  </div>
+                </div>
+              )}
               {errors.photo && (
                 <p className="text-xs ml-1 mt-1 text-red-400">{errors.photo.message}</p>
               )}
@@ -393,7 +478,8 @@ function StudentSignup() {
             <button
               type="button"
               onClick={handleSubmit(submitHandler)}
-              className="w-[120px] px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer flex justify-center items-center">
+              disabled={loading || (imageUploadProgress < 100 && imageUploadProgress > 0)}
+              className="w-[120px] px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer flex justify-center items-center disabled:cursor-not-allowed disabled:opacity-80">
               {loading ? <span className="loading loading-spinner"></span> : "Submit"}
             </button>
           )}
