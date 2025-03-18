@@ -3,55 +3,43 @@ import { Link, useLocation } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { LuCamera, LuTable, LuSettings, LuChartBar } from "react-icons/lu";
 import { useSidebar } from "../../context/SidebarContext";
-
-import {
-  BoxCubeIcon,
-  CalenderIcon,
-  ChevronDownIcon,
-  GridIcon,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
-} from "../../icons";
+import { CalenderIcon, ChevronDownIcon, GridIcon, UserCircleIcon } from "../../icons";
 
 const navItems = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/students/dashboard",
+    path: "/teachers/dashboard",
   },
   {
     icon: <CalenderIcon />,
     name: "Calendar",
-    path: "/students/calendar",
+    path: "/teachers/calendar",
   },
   {
     icon: <UserCircleIcon />,
     name: "User Profile",
-    path: "/students/profile",
+    path: "/teachers/profile",
   },
   {
     name: "Take Attendance",
     icon: <LuCamera />,
-    path: "/students/take-attendance",
+    path: "/teachers/take-attendance",
   },
   {
     name: "Attendance Overview",
     icon: <LuTable />,
-    path: "/students/attendance-overview",
+    path: "/teachers/attendance-overview",
   },
   {
     name: "Reports & Analytics",
     icon: <LuChartBar />,
-    path: "/students/reports",
+    path: "/teachers/reports",
   },
   {
     name: "Settings",
     icon: <LuSettings />,
-    path: "/students/settings",
+    path: "/teachers/settings",
   },
 ];
 

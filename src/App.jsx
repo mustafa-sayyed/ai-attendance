@@ -14,25 +14,18 @@ import {
   StudentSignup,
   TeacherSignup,
 } from "./components";
-import { GetStarted, Home } from "./pages";
+import { GetStarted, Home, Blank, Calendar, UserProfiles } from "./pages";
 import AuthLayout from "./layout/AuthLayout";
 
 // Dashboard and UI components
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
-import Videos from "./pages/UiElements/Videos";
-import Images from "./pages/UiElements/Images";
-import Alerts from "./pages/UiElements/Alerts";
-import Badges from "./pages/UiElements/Badges";
-import Avatars from "./pages/UiElements/Avatars";
-import Buttons from "./pages/UiElements/Buttons";
-import LineChart from "./pages/Charts/LineChart";
-import BarChart from "./pages/Charts/BarChart";
-import Calendar from "./pages/Calendar";
+import { Alerts, Avatars, Badges, Buttons, Images, Videos } from "./pages/UiElements";
+import { LineChart, BarChart } from "./pages/Charts";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
-import Blank from "./pages/Blank";
-import AppLayout from "./layout/Institute/AppLayout";
+import InstituteLayout from "./layout/Institute/AppLayout";
+import StudentLayout from "./layout/Student/AppLayout";
+import TeacherLayout from "./layout/Teachers/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
@@ -66,30 +59,75 @@ function App() {
         </Route>
 
         {/* Dashboard Layout */}
-        <Route element={<AppLayout />}>
+        <Route path="/teachers" element={<InstituteLayout />}>
           {/* Dashboard Home */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />}/>
 
           {/* Other Dashboard / UI Routes */}
-          <Route path="/profile" element={<UserProfiles />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/blank" element={<Blank />} />
-          <Route path="/take-attendance" element={<Blank />} />
-          <Route path="/attendance-overview" element={<Blank />} />
-          <Route path="/reports" element={<Blank />} />
-          <Route path="/settings" element={<Blank />} />
-          <Route path="/form-elements" element={<FormElements />} />
-          <Route path="/basic-tables" element={<BasicTables />} />
-          <Route path="/alerts" element={<Alerts />} />
-          <Route path="/avatars" element={<Avatars />} />
-          <Route path="/badge" element={<Badges />} />
-          <Route path="/buttons" element={<Buttons />} />
-          <Route path="/images" element={<Images />} />
-          <Route path="/videos" element={<Videos />} />
-          <Route path="/line-chart" element={<LineChart />} />
-          <Route path="/bar-chart" element={<BarChart />} />
+          <Route path="profile" element={<UserProfiles />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="blank" element={<Blank />} />
+          <Route path="take-attendance" element={<Blank />} />
+          <Route path="attendance-overview" element={<Blank />} />
+          <Route path="reports" element={<Blank />} />
+          <Route path="settings" element={<Blank />} />
+          <Route path="form-elements" element={<FormElements />} />
+          <Route path="basic-tables" element={<BasicTables />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="avatars" element={<Avatars />} />
+          <Route path="badge" element={<Badges />} />
+          <Route path="buttons" element={<Buttons />} />
+          <Route path="images" element={<Images />} />
+          <Route path="videos" element={<Videos />} />
+          <Route path="line-chart" element={<LineChart />} />
+          <Route path="bar-chart" element={<BarChart />} />
         </Route>
+        <Route path="/students" element={<StudentLayout />}>
+          {/* Dashboard Home */}
+          <Route path="dashboard" element={<Dashboard />}/>
 
+          {/* Other Dashboard / UI Routes */}
+          <Route path="profile" element={<UserProfiles />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="blank" element={<Blank />} />
+          <Route path="take-attendance" element={<Blank />} />
+          <Route path="attendance-overview" element={<Blank />} />
+          <Route path="reports" element={<Blank />} />
+          <Route path="settings" element={<Blank />} />
+          <Route path="form-elements" element={<FormElements />} />
+          <Route path="basic-tables" element={<BasicTables />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="avatars" element={<Avatars />} />
+          <Route path="badge" element={<Badges />} />
+          <Route path="buttons" element={<Buttons />} />
+          <Route path="images" element={<Images />} />
+          <Route path="videos" element={<Videos />} />
+          <Route path="line-chart" element={<LineChart />} />
+          <Route path="bar-chart" element={<BarChart />} />
+        </Route>
+        <Route path="/institute" element={<TeacherLayout />}>
+          {/* Dashboard Home */}
+          <Route path="dashboard" element={<Dashboard />}/>
+
+          {/* Other Dashboard / UI Routes */}
+          <Route path="profile" element={<UserProfiles />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="blank" element={<Blank />} />
+          <Route path="take-attendance" element={<Blank />} />
+          <Route path="attendance-overview" element={<Blank />} />
+          <Route path="reports" element={<Blank />} />
+          <Route path="settings" element={<Blank />} />
+          <Route path="form-elements" element={<FormElements />} />
+          <Route path="basic-tables" element={<BasicTables />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="avatars" element={<Avatars />} />
+          <Route path="badge" element={<Badges />} />
+          <Route path="buttons" element={<Buttons />} />
+          <Route path="images" element={<Images />} />
+          <Route path="videos" element={<Videos />} />
+          <Route path="line-chart" element={<LineChart />} />
+          <Route path="bar-chart" element={<BarChart />} />
+        </Route>
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -9,37 +9,37 @@ const navItems = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/institute/dashboard",
   },
   {
     icon: <CalenderIcon />,
     name: "Calendar",
-    path: "/calendar",
+    path: "/institute/calendar",
   },
   {
     icon: <UserCircleIcon />,
     name: "User Profile",
-    path: "/profile",
+    path: "/institute/profile",
   },
   {
     name: "Take Attendance",
     icon: <LuCamera />,
-    path: "/take-attendance",
+    path: "/institute/take-attendance",
   },
   {
     name: "Attendance Overview",
     icon: <LuTable />,
-    path: "/attendance-overview",
+    path: "/institute/attendance-overview",
   },
   {
     name: "Reports & Analytics",
     icon: <LuChartBar />,
-    path: "/reports",
+    path: "/institute/reports",
   },
   {
     name: "Settings",
     icon: <LuSettings />,
-    path: "/settings",
+    path: "/institute/settings",
   },
 ];
 

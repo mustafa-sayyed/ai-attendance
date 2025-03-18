@@ -6,11 +6,14 @@ import { FiUpload, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import { IKContext, IKUpload } from "imagekitio-react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/authSlice";
 
 const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URL;
 const publicKey = import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY;
 const url = import.meta.env.VITE_IMAGEKIT_SERVER_URL;
-console.log(url, urlEndpoint, publicKey);
 
 const authenticator = async () => {
   try {
@@ -23,7 +26,6 @@ const authenticator = async () => {
 
     const data = await response.json();
     const { signature, expire, token } = data;
-    console.log(data);
 
     return { signature, expire, token };
   } catch (error) {
@@ -32,28 +34,33 @@ const authenticator = async () => {
 };
 
 function StudentSignup() {
-  const [colleges, setColleges] = useState([]);
+  const [institutes, setInstitutes] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [classes, setClasses] = useState([]);
-
   const [currentStep, setCurrentStep] = useState(1);
   const [photoPreview, setPhotoPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const schema = [
     yup.object({
-      collegeName: yup.string().required("College Name is required"),
+      institute: yup.string().required("Institute Name is required"),
       registrationToken: yup.string().required("Registration Token is required"),
     }),
     yup.object({
       department: yup.string().required("Department is required"),
       class: yup.string().required("Class is required"),
-      rollNumber: yup.string().required("Roll Number is required"),
+      rollno: yup
+        .number()
+        .typeError("Rollno must be a number")
+        .required("Roll Number is required"),
     }),
     yup.object({
-      fullName: yup.string().required("Full Name is required"),
+      name: yup.string().required("Full Name is required"),
       email: yup.string().email("Invalid email").required("Email is required"),
       password: yup
         .string()
@@ -78,10 +85,8 @@ function StudentSignup() {
   } = useForm({ resolver: yupResolver(currentSchema), mode: "onChange" });
 
   const handleNext = async () => {
-    const isValid = await trigger(); // Validate all fields in the current step
+    const isValid = await trigger();
     if (isValid && currentStep < 4) {
-      console.log(true);
-
       setCurrentStep(currentStep + 1);
     }
   };
@@ -90,12 +95,43 @@ function StudentSignup() {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
+  const handleErrors = (error) => {
+    toast.error(error);
+  };
+
+  const handleSuccess = (message) => {
+    toast.success(message);
+  };
+
+  const handleToken = (token) => {
+    localStorage.setItem("token", token);
+  };
+
   const submitHandler = (data) => {
-    console.log(JSON.stringify(data));
-    setLoading(true);
-    console.log("Form Data Submitted:", data);
-    alert("Registration Successful!");
-    // handleNext();
+    setIsFormSubmitting(true);
+    axios
+      .post("http://localhost:3000/api/v1/student/signup", {
+        ...data,
+        cls: data.class,
+      })
+      .then((res) => {
+        handleSuccess(res.data.msg);
+        handleToken(res.data.token);
+        const result = dispatch(login({ userData: res.data.user, roles: ["student"] }));
+        console.log(result);
+        setTimeout(() => {
+          setIsFormSubmitting(false);
+          navigate("/students/dashboard");
+        }, 1000);
+      })
+      .catch((error) => {
+        if (error) {
+          setTimeout(() => {
+            handleErrors(error.response?.data?.msg);
+            setIsFormSubmitting(false);
+          }, 1000);
+        }
+      });
   };
 
   const handlePhotoChange = (e) => {
@@ -103,8 +139,6 @@ function StudentSignup() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader);
-
         setPhotoPreview(reader.result);
       };
       reader.readAsDataURL(file);
@@ -113,22 +147,84 @@ function StudentSignup() {
 
   const handleImageUpload = (image) => {
     setValue("photo", image.url);
-    console.log("Image Uploaded");
   };
 
   React.useEffect(() => {
-    setFocus("collegeName");
-    axios
-      .get("http://localhost:3000/api/v1/institute/")
-      .then((res) => {
-        const institutes = res.data.institutes.map((clg) => ({name: clg.name, id: clg._id}));
-        setColleges(institutes);
-        console.log(res, institutes);
-      })
-      .catch((error) => console.log(error));
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("http://localhost:3000/api/v1/student/get-current-student", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login({ userData: res.data.user, roles: ["student"] }));
+            setTimeout(() => {
+              navigate("/students/dashboard");
+            }, 1300);
+          } else {
+            // localStorage.removeItem("token");
+            console.log("removing token from localstorage");
+          }
+        })
+        .catch((err) => {
+          if (!err.response) {
+            handleErrors("Network Error, Check Your Internet Connection");
+          }
+          // localStorage.removeItem("token");
+          console.log("removing token from localstorage");
+        });
+    } else {
+      setFocus("institute");
+      axios
+        .get("http://localhost:3000/api/v1/institute/")
+        .then((res) => {
+          setInstitutes(res.data.institutes);
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500);
+        })
+        .catch((err) => handleErrors("Connection Error, No Internet Connection"));
+    }
   }, []);
 
-  return (
+  const handleinstituteChange = (e) => {
+    const selectedInstituteId = e.target.value;
+    setValue("institute", selectedInstituteId);
+
+    if (institutes) {
+      const selectedInstitute = institutes.find(
+        (institute) => institute._id === selectedInstituteId
+      );
+
+      if (selectedInstitute) {
+        setDepartments(selectedInstitute.departments);
+        setClasses([]);
+      }
+    }
+  };
+
+  const handleDepartmentChange = (e) => {
+    const selectedDeptId = e.target.value;
+    setValue("department", selectedDeptId);
+
+    if (institutes) {
+      const selectedDepartment = departments.find((dept) => dept._id === selectedDeptId);
+
+      if (selectedDepartment) {
+        setClasses(selectedDepartment.class);
+      }
+    }
+  };
+
+  return loading ? (
+    <div className="flex flex-col justify-center items-center h-[90vh] text-white bg-[#030712]">
+      <div className="loading loading-spinner h-16 w-16 bg-blue-700"></div>
+      <div className="mt-4 text-lg">Loding......</div>
+    </div>
+  ) : (
     <div className="flex h-[90vh] w-full justify-center items-center overflow-hidden px-2 bg-[#030712]">
       <form className="relative flex w-[400px] flex-col space-y-5 rounded-lg border border-gray-700 bg-[#111827] px-6 py-10 shadow-xl sm:mx-auto">
         {/* Header */}
@@ -155,34 +251,35 @@ function StudentSignup() {
             <div>
               <div className="relative">
                 <select
-                  id="college"
-                  {...register("collegeName")}
+                  id="institute"
+                  {...register("institute")}
+                  onChange={handleinstituteChange}
                   className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-[#111827] px-4 py-3 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
-                    errors.collegeName ? "border-red-400 focus:border-red-400" : ""
+                    errors.institute ? "border-red-400 focus:border-red-400" : ""
                   }`}>
                   <option value="" className="text-gray-400">
-                    Select College
+                    Select Institute
                   </option>
-                  {colleges?.map((clg, index) => (
+                  {institutes?.map((clg, index) => (
                     <option
                       key={index}
-                      value={clg.name}
+                      value={clg._id}
                       className="bg-[#111827] text-gray-200">
                       {clg.name}
                     </option>
                   ))}
                 </select>
                 <label
-                  htmlFor="college"
+                  htmlFor="institute"
                   className={`absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-[#111827] px-2 text-sm text-gray-400 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-[#155dfc] ${
-                    errors.collegeName ? "text-red-400 peer-focus:text-red-400" : ""
+                    errors.institute ? "text-red-400 peer-focus:text-red-400" : ""
                   }`}>
-                  College
+                  Institute
                 </label>
               </div>
-              {errors.collegeName && (
+              {errors.institute && (
                 <p className="text-xs ml-1 mt-1 text-red-400">
-                  {errors.collegeName.message}
+                  {errors.institute.message}
                 </p>
               )}
             </div>
@@ -221,6 +318,7 @@ function StudentSignup() {
                 <select
                   id="department"
                   {...register("department")}
+                  onChange={handleDepartmentChange}
                   className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-[#111827] px-4 py-3 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
                     errors.department ? "border-red-400 focus:border-red-400" : ""
                   }`}>
@@ -230,9 +328,9 @@ function StudentSignup() {
                   {departments.map((dept, index) => (
                     <option
                       key={index}
-                      value={dept}
+                      value={dept._id}
                       className="bg-[#111827] text-gray-200">
-                      {dept}
+                      {dept.name}
                     </option>
                   ))}
                 </select>
@@ -264,9 +362,9 @@ function StudentSignup() {
                   {classes.map((cls, index) => (
                     <option
                       key={index}
-                      value={cls}
+                      value={cls._id}
                       className="bg-[#111827] text-gray-200">
-                      {cls}
+                      {cls.name}
                     </option>
                   ))}
                 </select>
@@ -286,25 +384,23 @@ function StudentSignup() {
               <div className="relative">
                 <input
                   type="text"
-                  id="rollNumber"
-                  {...register("rollNumber")}
+                  id="rollno"
+                  {...register("rollno")}
                   className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
-                    errors.rollNumber ? "border-red-400 focus:border-red-400" : ""
+                    errors.rollno ? "border-red-400 focus:border-red-400" : ""
                   }`}
                   placeholder=" "
                 />
                 <label
-                  htmlFor="rollNumber"
+                  htmlFor="rollno"
                   className={`absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-[#111827] px-2 text-sm text-gray-400 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-[#155dfc] ${
-                    errors.rollNumber ? "text-red-400 peer-focus:text-red-400" : ""
+                    errors.rollno ? "text-red-400 peer-focus:text-red-400" : ""
                   }`}>
                   Roll Number
                 </label>
               </div>
-              {errors.rollNumber && (
-                <p className="text-xs ml-1 mt-1 text-red-400">
-                  {errors.rollNumber.message}
-                </p>
+              {errors.rollno && (
+                <p className="text-xs ml-1 mt-1 text-red-400">{errors.rollno.message}</p>
               )}
             </div>
           </div>
@@ -316,25 +412,23 @@ function StudentSignup() {
               <div className="relative">
                 <input
                   type="text"
-                  id="fullName"
-                  {...register("fullName")}
+                  id="name"
+                  {...register("name")}
                   className={`peer block w-full appearance-none rounded-lg border border-gray-600 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-200 focus:border-[#155dfc] focus:outline-none focus:ring-0 ${
-                    errors.fullName ? "border-red-400 focus:border-red-400" : ""
+                    errors.name ? "border-red-400 focus:border-red-400" : ""
                   }`}
                   placeholder=" "
                 />
                 <label
-                  htmlFor="fullName"
+                  htmlFor="name"
                   className={`absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-[#111827] px-2 text-sm text-gray-400 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-[#155dfc] ${
-                    errors.fullName ? "text-red-400 peer-focus:text-red-400" : ""
+                    errors.name ? "text-red-400 peer-focus:text-red-400" : ""
                   }`}>
                   Full Name
                 </label>
               </div>
-              {errors.fullName && (
-                <p className="text-xs ml-1 mt-1 text-red-400">
-                  {errors.fullName.message}
-                </p>
+              {errors.name && (
+                <p className="text-xs ml-1 mt-1 text-red-400">{errors.name.message}</p>
               )}
             </div>
             <div>
@@ -432,12 +526,12 @@ function StudentSignup() {
               {isImageUploading && (
                 <div>
                   <div className="mb-2 mt-3 flex justify-between items-center">
-                    <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
-                      Image is Uploading.....
+                    <h3 className="text-sm text-gray-400 flex justify-center items-center">
+                      {imageUploadProgress < 100
+                        ? "Image is Uploading......"
+                        : "Image Uploaded Successfully"}
                     </h3>
-                    <span className="text-sm text-gray-800 dark:text-white">
-                      {imageUploadProgress}%
-                    </span>
+                    <span className="text-sm text-gray-400">{imageUploadProgress}%</span>
                   </div>
                   <div
                     className="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700"
@@ -478,13 +572,26 @@ function StudentSignup() {
             <button
               type="button"
               onClick={handleSubmit(submitHandler)}
-              disabled={loading || (imageUploadProgress < 100 && imageUploadProgress > 0)}
+              disabled={
+                isFormSubmitting || (imageUploadProgress < 100 && imageUploadProgress > 0)
+              }
               className="w-[120px] px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer flex justify-center items-center disabled:cursor-not-allowed disabled:opacity-80">
-              {loading ? <span className="loading loading-spinner"></span> : "Submit"}
+              {isFormSubmitting ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Submit"
+              )}
             </button>
           )}
         </div>
       </form>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        autoClose={5000}
+        closeButton="true"
+        draggable="true"
+      />
     </div>
   );
 }
