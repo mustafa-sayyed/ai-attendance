@@ -5,7 +5,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/authSlice";
 
 function InstituteSignup() {
@@ -61,9 +61,11 @@ function InstituteSignup() {
       });
   };
 
+  const authStatus = useSelector(state => state.auth.status)
+  
   React.useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !authStatus) {
       axios
         .get("http://localhost:3000/api/v1/institute/get-current-institute", {
           headers: {

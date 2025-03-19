@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/authSlice";
 import axios from "axios";
 
@@ -50,19 +50,38 @@ function Signin() {
         password: data.password,
       })
       .then((res) => {
-        toast.success(res.data.msg);
         localStorage.setItem("token", res.data.token);
-        setIsFormSubmitting(false);
+        axios
+        .get("http://localhost:3000/api/v1/auth/get-current-user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(login({ userData: res.data.user, roles: [res.data.role] }));
+          }
+        })
         setTimeout(() => {
-          navigate(`/${data.role}/dashboard`);
+          toast.success(res.data.msg);
+          setIsFormSubmitting(false);
         }, 1500);
+        const simulation = setTimeout(() => {
+          navigate(`/${data.role}/dashboard`);
+        }, 2000);
       })
       .catch((err) => {
+        console.log(err);
+        
         setTimeout(() => {
           toast.error(err.response?.data?.msg || "Invalid email or password");
           setIsFormSubmitting(false);
         }, 1500);
       });
+
+    return () => {
+      clearTimeout();
+    };
   };
 
   const handleErrors = (error) => {
@@ -73,9 +92,11 @@ function Signin() {
     toast.success(message);
   };
 
+  const authStatus = useSelector((state) => state.auth.status);
+  const userRole = useSelector((state) => state.auth.roles);
   React.useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !authStatus) {
       axios
         .get("http://localhost:3000/api/v1/auth/get-current-user", {
           headers: {
@@ -100,11 +121,14 @@ function Signin() {
           localStorage.removeItem("token");
           console.log("removing token from localstorage");
         });
+    } else if (token && authStatus) {
+      navigate(`/${userRole[0]}/dashboard`);
+      console.log("I already have token and userData");
     }
-    setTimeout(() => {
 
+    setTimeout(() => {
       setLoading(false);
-    }, 1500)
+    }, 1000);
   }, []);
 
   return loading ? (

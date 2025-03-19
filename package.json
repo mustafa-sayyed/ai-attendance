@@ -28,6 +28,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "flatpickr": "^4.6.13",
+    "framer-motion": "^12.5.0",
     "imagekitio-react": "^4.2.0",
     "lucide-react": "^0.468.0",
     "postcss": "^8.5.3",

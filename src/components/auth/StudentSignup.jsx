@@ -150,44 +150,44 @@ function StudentSignup() {
   };
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios
-        .get("http://localhost:3000/api/v1/student/get-current-student", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            dispatch(login({ userData: res.data.user, roles: ["student"] }));
-            setTimeout(() => {
-              navigate("/students/dashboard");
-            }, 1300);
-          } else {
-            // localStorage.removeItem("token");
-            console.log("removing token from localstorage");
-          }
-        })
-        .catch((err) => {
-          if (!err.response) {
-            handleErrors("Network Error, Check Your Internet Connection");
-          }
-          // localStorage.removeItem("token");
-          console.log("removing token from localstorage");
-        });
-    } else {
-      setFocus("institute");
-      axios
-        .get("http://localhost:3000/api/v1/institute/")
-        .then((res) => {
-          setInstitutes(res.data.institutes);
-          setTimeout(() => {
-            setLoading(false);
-          }, 1500);
-        })
-        .catch((err) => handleErrors("Connection Error, No Internet Connection"));
-    }
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   axios
+    //     .get("http://localhost:3000/api/v1/student/get-current-student", {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     })
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         dispatch(login({ userData: res.data.user, roles: ["student"] }));
+    //         setTimeout(() => {
+    //           navigate("/students/dashboard");
+    //         }, 1300);
+    //       } else {
+    //         localStorage.removeItem("token");
+    //         console.log("removing token from localstorage");
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       if (!err.response) {
+    //         handleErrors("Network Error, Check Your Internet Connection");
+    //       }
+    //       // localStorage.removeItem("token");
+    //       console.log("removing token from localstorage");
+    //     });
+    // } else {
+    // }
+    setFocus("institute");
+    axios
+      .get("http://localhost:3000/api/v1/institute/")
+      .then((res) => {
+        setInstitutes(res.data.institutes);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      })
+      .catch((err) => handleErrors("Connection Error, No Internet Connection"));
   }, []);
 
   const handleinstituteChange = (e) => {

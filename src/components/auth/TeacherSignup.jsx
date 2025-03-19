@@ -6,7 +6,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/authSlice";
 
 function TeacherSignup() {
@@ -108,6 +108,8 @@ function TeacherSignup() {
       });
   };
 
+  const authStatus = useSelector(state => state.auth.status)
+
   // Fetch institutes if no token exists
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -120,7 +122,7 @@ function TeacherSignup() {
           setLoading(false);
         })
         .catch((err) => handleErrors("Connection Error, No Internet Connection"));
-    } else {
+    } else if(token && !authStatus) {
       axios
         .get("http://localhost:3000/api/v1/teacher/get-current-teacher", {
           headers: {
@@ -146,7 +148,7 @@ function TeacherSignup() {
           console.log("removing token from localstorage");
         });
     }
-  }, [setFocus]);
+  }, []);
 
   // When institute is selected, update departments from that institute
   const handleInstituteChange = (e) => {

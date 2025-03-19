@@ -12,6 +12,8 @@ import Signin from "./auth/Signin.jsx";
 import StudentSignup from "./auth/StudentSignup.jsx";
 import TeacherSignup from "./auth/TeacherSignup.jsx";
 import InstituteSignup from "./auth/InstituteSignup.jsx";
+import LogoutModal from "./auth/LogoutModal.jsx";
+import Logout from "./Logout.jsx";
 
 export {
   Navbar,
@@ -28,4 +30,6 @@ export {
   StudentSignup,
   TeacherSignup,
   InstituteSignup,
+  LogoutModal,
+  Logout,
 };
