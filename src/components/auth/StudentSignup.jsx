@@ -8,7 +8,7 @@ import { IKContext, IKUpload } from "imagekitio-react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/authSlice";
 
 const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URL;
@@ -45,6 +45,7 @@ function StudentSignup() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const authStatus = useSelector((state) => state.auth.status);
 
   const schema = [
     yup.object({
@@ -121,7 +122,7 @@ function StudentSignup() {
         console.log(result);
         setTimeout(() => {
           setIsFormSubmitting(false);
-          navigate("/students/dashboard");
+          navigate("/student/dashboard");
         }, 1000);
       })
       .catch((error) => {
@@ -150,7 +151,10 @@ function StudentSignup() {
   };
 
   React.useEffect(() => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if(token && authStatus) {
+      navigate("/students/dashboard");
+    }
     // if (token) {
     //   axios
     //     .get("http://localhost:3000/api/v1/student/get-current-student", {
@@ -178,6 +182,7 @@ function StudentSignup() {
     //     });
     // } else {
     // }
+
     setFocus("institute");
     axios
       .get("http://localhost:3000/api/v1/institute/")

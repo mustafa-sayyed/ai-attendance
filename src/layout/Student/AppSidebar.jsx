@@ -4,55 +4,44 @@ import { MdLogout } from "react-icons/md";
 import { LuCamera, LuTable, LuSettings, LuChartBar } from "react-icons/lu";
 import { useSidebar } from "../../context/SidebarContext";
 
-import {
-  BoxCubeIcon,
-  CalenderIcon,
-  ChevronDownIcon,
-  GridIcon,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
-} from "../../icons";
+import { CalenderIcon, ChevronDownIcon, GridIcon, UserCircleIcon } from "../../icons";
 import { LogoutModal } from "../../components";
 
 const navItems = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/students/dashboard",
-  },
-  {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/students/calendar",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
-    path: "/students/profile",
+    path: "/student/dashboard",
   },
   {
     name: "Give Attendance",
     icon: <LuCamera />,
-    path: "/students/give-attendance",
+    path: "/student/give-attendance",
   },
   {
     name: "Attendance Overview",
     icon: <LuTable />,
-    path: "/students/attendance-overview",
+    path: "/student/attendance-overview",
   },
   {
     name: "Reports & Analytics",
     icon: <LuChartBar />,
-    path: "/students/reports",
+    path: "/student/reports",
+  },
+  {
+    icon: <CalenderIcon />,
+    name: "Calendar",
+    path: "/student/calendar",
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "User Profile",
+    path: "/student/profile",
   },
   {
     name: "Settings",
     icon: <LuSettings />,
-    path: "/students/settings",
+    path: "/student/settings",
   },
 ];
 
@@ -297,10 +286,10 @@ const AppSidebar = () => {
               </div>
             </div>
           </nav>
-          (
+
           <Link
             onClick={() => setLogoutModalOpen(true)}
-            className={`menu-item group ${isMobileOpen ? 'mt-1' : 'mt-10'} ${
+            className={`menu-item group ${isMobileOpen ? "mt-1" : "mt-10"} ${
               isActive("/logout") ? "menu-item-active" : "menu-item-inactive"
             }`}
             // onClick={() => isExpanded ? null : toggleSidebar()}
@@ -315,7 +304,6 @@ const AppSidebar = () => {
               <span className="menu-item-text">{"Logout"}</span>
             )}
           </Link>
-          )
         </div>
       </aside>
       <LogoutModal isOpen={logoutModalOpen} onClose={() => setLogoutModalOpen(false)} />

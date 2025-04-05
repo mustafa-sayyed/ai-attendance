@@ -1,7 +1,6 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, Outlet } from "react-router-dom";
 
-// Landing / Public components
 import {
   About,
   Contact,
@@ -14,25 +13,37 @@ import {
   StudentSignup,
   TeacherSignup,
   Logout,
+  AuthLayout,
 } from "./components";
-import { GetStarted, Home, Blank, Calendar, UserProfiles, TakeAttendance } from "./pages";
-import AuthLayout from "./layout/AuthLayout";
+import {
+  GetStarted,
+  Home,
+  Blank,
+  Calendar,
+  TakeAttendance,
+  InstituteProfile,
+  StudentProfile,
+  TeacherProfile,
+  ManageStaff,
+  ManageDepartment,
+  ManageClasses,
+} from "./pages";
 
 // Dashboard and UI components
-import NotFound from "./pages/OtherPage/NotFound";
+import { InstituteLayout, StudentLayout, TeacherLayout } from "./layout";
+import { NotFound, Unauthorized } from "./pages/OtherPage";
 import { Alerts, Avatars, Badges, Buttons, Images, Videos } from "./pages/UiElements";
 import { LineChart, BarChart } from "./pages/Charts";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
-import InstituteLayout from "./layout/Institute/AppLayout";
-import StudentLayout from "./layout/Student/AppLayout";
-import TeacherLayout from "./layout/Teachers/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import GiveAttendancePage from "./pages/GiveAttendance";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "./features/authSlice";
+import socket from "./utils/socket";
+import { toast, ToastContainer } from "react-toastify";
 
 const PublicLayout = () => (
   <>
@@ -43,12 +54,37 @@ const PublicLayout = () => (
 
 function App() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const authStatus = useSelector((state) => state.auth.status);
   const [loading, setLoading] = React.useState(true);
 
+  const token = localStorage.getItem("token");
+  const role = useSelector((state) => state?.auth?.roles?.[0]) || null;
+  const classId = useSelector((state) => state?.auth?.userData?.class?._id) || null;
+  const teacherId = useSelector((state) => state?.auth?.userData?._id) || null;
+
+  console.log(role, classId, teacherId);
+
+  const handleInfo = (msg) => {
+    toast.info(msg);
+  };
+
+  useEffect(() => {
+    if (token && authStatus) {
+      if (role && role === "student" && classId) {
+        socket.emit("joinRoom", classId);
+
+        socket.on("give-attendance", (data) => {
+          handleInfo(data.msg);
+          console.log(data);
+        });
+      } else if (role && role === "teacher") {
+        socket.emit("joinTeacherRoom", teacherId);
+      }
+    }
+  }, [authStatus, role, classId, teacherId]);
+
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !authStatus) {
       axios
         .get("http://localhost:3000/api/v1/auth/get-current-user", {
           headers: {
@@ -57,7 +93,7 @@ function App() {
         })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(login({ userData: res.data.user, roles: [res.data.role] }));
+            dispatch(login({ userData: res.data.user, roles: res.data.role }));
           } else {
             localStorage.removeItem("token");
             console.log("removing token from localstorage");
@@ -73,21 +109,28 @@ function App() {
     }
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
   }, []);
 
   return loading ? (
     <div className="flex flex-col justify-center items-center h-screen text-white bg-[#030712]">
       <div className="loading loading-spinner h-16 w-16 bg-blue-700"></div>
-      <div className="mt-4 text-lg">Loding......</div>
+      <div className="mt-4 text-lg">Loading...</div>
     </div>
   ) : (
     <>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        autoClose={5000}
+        closeOnClick="true"
+        closeButton="true"
+        draggable="true"
+        className={`z-99999`}
+      />
       <ScrollToTop />
-      {/* Global Navbar from public pages */}
-
       <Routes>
-        {/* Public Routes */}
+        {/* Public Routes - No authentication required */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/get-started" element={<GetStarted />} />
@@ -95,44 +138,50 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/signin" element={<PublicSignin />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/student/signup" element={<StudentSignup />} />
           <Route path="/teacher/signup" element={<TeacherSignup />} />
           <Route path="/institute/signup" element={<InstituteSignup />} />
-          <Route path="/logout" element={<Logout />} />
         </Route>
+        <Route path="/signin" element={<PublicSignin />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* Dashboard Layout */}
-        <Route path="/teachers" element={<InstituteLayout />}>
-          {/* Dashboard Home */}
+        <Route
+          path="/teacher"
+          element={
+            <AuthLayout requireAuth={true} allowedRoles={["teacher", "student"]}>
+              <TeacherLayout />
+            </AuthLayout>
+          }>
           <Route path="dashboard" element={<Dashboard />} />
-
-          {/* Other Dashboard / UI Routes */}
-          <Route path="profile" element={<UserProfiles />} />
+          <Route path="profile" element={<TeacherProfile />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="blank" element={<Blank />} />
           <Route path="take-attendance" element={<TakeAttendance />} />
           <Route path="attendance-overview" element={<Blank />} />
           <Route path="reports" element={<Blank />} />
           <Route path="settings" element={<Blank />} />
-          <Route path="form-elements" element={<FormElements />} />
-          <Route path="basic-tables" element={<BasicTables />} />
-          <Route path="alerts" element={<Alerts />} />
-          <Route path="avatars" element={<Avatars />} />
-          <Route path="badge" element={<Badges />} />
-          <Route path="buttons" element={<Buttons />} />
-          <Route path="images" element={<Images />} />
-          <Route path="videos" element={<Videos />} />
-          <Route path="line-chart" element={<LineChart />} />
-          <Route path="bar-chart" element={<BarChart />} />
+          <Route
+            path="manage-classes"
+            element={
+              <AuthLayout requireAuth={true} allowedRoles={["teacher", "hod", "student"]}>
+                <ManageClasses />
+              </AuthLayout>
+            }
+          />
         </Route>
-        <Route path="/students" element={<StudentLayout />}>
-          {/* Dashboard Home */}
-          <Route path="dashboard" element={<Dashboard />} />
 
-          {/* Other Dashboard / UI Routes */}
-          <Route path="profile" element={<UserProfiles />} />
+        {/* Student Routes - Authentication required with 'students' role */}
+        <Route
+          path="/student"
+          element={
+            <AuthLayout requireAuth={true} allowedRoles={["student", "teacher"]}>
+              <StudentLayout />
+            </AuthLayout>
+          }>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="profile" element={<StudentProfile />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="blank" element={<Blank />} />
           <Route path="give-attendance" element={<GiveAttendancePage />} />
@@ -150,33 +199,33 @@ function App() {
           <Route path="line-chart" element={<LineChart />} />
           <Route path="bar-chart" element={<BarChart />} />
         </Route>
-        <Route path="/institute" element={<TeacherLayout />}>
-          {/* Dashboard Home */}
-          <Route path="dashboard" element={<Dashboard />} />
 
-          {/* Other Dashboard / UI Routes */}
-          <Route path="profile" element={<UserProfiles />} />
+        {/* Institute Routes - Authentication required with 'institute' role */}
+        <Route
+          path="/institute"
+          element={
+            <AuthLayout
+              requireAuth={true}
+              allowedRoles={["institute", "student", "teacher"]}>
+              <InstituteLayout />
+            </AuthLayout>
+          }>
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="calendar" element={<Calendar />} />
-          <Route path="blank" element={<Blank />} />
           <Route path="take-attendance" element={<Blank />} />
           <Route path="attendance-overview" element={<Blank />} />
+          <Route path="manage-staff" element={<ManageStaff />} />
+          <Route path="manage-departments" element={<ManageDepartment />} />
           <Route path="reports" element={<Blank />} />
+          <Route path="profile" element={<InstituteProfile />} />
           <Route path="settings" element={<Blank />} />
-          <Route path="form-elements" element={<FormElements />} />
-          <Route path="basic-tables" element={<BasicTables />} />
-          <Route path="alerts" element={<Alerts />} />
-          <Route path="avatars" element={<Avatars />} />
-          <Route path="badge" element={<Badges />} />
-          <Route path="buttons" element={<Buttons />} />
-          <Route path="images" element={<Images />} />
-          <Route path="videos" element={<Videos />} />
-          <Route path="line-chart" element={<LineChart />} />
-          <Route path="bar-chart" element={<BarChart />} />
+          <Route path="blank" element={<Blank />} />
         </Route>
+
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      </>
+    </>
   );
 }
 

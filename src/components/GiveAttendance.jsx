@@ -1,8 +1,18 @@
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { LuCamera, LuCheck, LuCircleAlert } from "react-icons/lu";
+import {
+  LuBellRing,
+  LuCalendarX,
+  LuCamera,
+  LuCheck,
+  LuCircleAlert,
+} from "react-icons/lu";
+import { useSelector } from "react-redux";
+import socket from "../utils/socket";
 
 const GiveAttendance = () => {
+  const [hasLectureAttendance, setHasLectureAttendance] = useState(false);
+
   // Component states
   const [stage, setStage] = useState("initial"); // initial, code-entry, camera, processing, success, error
   const [attendanceCode, setAttendanceCode] = useState("");
@@ -11,6 +21,9 @@ const GiveAttendance = () => {
   const [processingStatus, setProcessingStatus] = useState("");
   const [resultMessage, setResultMessage] = useState("");
   const [imageData, setImageData] = useState("");
+  const [progress, setProgress] = useState(0); // for progress bar
+
+  const encoding = useSelector((state) => state.auth.userData.encoding);
 
   // References
   const videoRef = useRef(null);
@@ -21,7 +34,6 @@ const GiveAttendance = () => {
     e.preventDefault();
     setCodeError("");
 
-    // Validate the attendance code (in real app, check against API)
     if (!attendanceCode || attendanceCode.length < 4) {
       setCodeError("Please enter a valid attendance code");
       return;
@@ -36,14 +48,12 @@ const GiveAttendance = () => {
     }
   };
 
-  // Function to start the camera
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user",
           width: { ideal: 620 },
-          //   height: { ideal: 780 },
         },
         audio: false,
       });
@@ -62,7 +72,6 @@ const GiveAttendance = () => {
     }
   };
 
-  // Function to stop the camera
   const stopCamera = () => {
     if (videoStream) {
       videoStream.getTracks().forEach((track) => track.stop());
@@ -70,7 +79,6 @@ const GiveAttendance = () => {
     }
   };
 
-  // Function to capture image and send for processing
   const captureImage = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -78,78 +86,106 @@ const GiveAttendance = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    // Set canvas dimensions to match video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    // Draw video frame to canvas
+    context.filter = "brightness(1.1)";
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Convert canvas to data URL
-    const imageData = canvas.toDataURL("image/jpeg");
-    setImageData(imageData);
+    const capturedImageData = canvas.toDataURL("image/jpeg");
+    setImageData(capturedImageData);
 
-    // Move to processing stage
-    // setStage("processing");
+    setStage("processing");
     setProcessingStatus("Analyzing facial data...");
+    animateProgress();
 
-    // In real app: Send image data to the backend for facial recognition
-    // Here we're simulating the API call with a timeout
     setTimeout(() => {
-      processAttendance(imageData);
-    }, 2000);
+      processAttendance(capturedImageData);
+    }, 1500);
   };
 
-  // Function to process attendance (simulated)
-  const processAttendance = async (imageData) => {
-    imageData = imageData.split(",")[1];
+  const animateProgress = () => {
+    setProgress(0);
+    const duration = 2200;
+    const target = 100;
+    const intervalTime = 50;
+    const increment = target / (duration / intervalTime);
 
-    const res = await axios.post("http://127.0.0.1:5000/student-attendance", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      image: imageData,
-    });
-
-
-    // Mock processing - this would be an API call in a real app
-    setProcessingStatus("Verifying identity...");
-
-    // Simulate API response delay
-    // setTimeout(() => {
-    //   // Mock response - 90% chance of success
-    //   const success = Math.random() < 0.9;
-
-    //   if (success) {
-    //     setStage("success");
-    //     setResultMessage(
-    //       `Attendance recorded successfully. Face matched! Date: ${new Date().toLocaleString()}`
-    //     );
-    //   } else {
-    //     setStage("error");
-    //     setResultMessage("Face recognition failed. Please try again or contact support.");
-    //   }
-
-    //   // Stop the camera after processing
-    //   stopCamera();
-    // }, 1500);
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev + increment >= target) {
+          clearInterval(interval);
+          return target;
+        }
+        return prev + increment;
+      });
+    }, intervalTime);
   };
 
-  // Cleanup function to stop camera when component unmounts
+  const processAttendance = async (capturedImageData) => {
+    try {
+      setProcessingStatus("Verifying identity...");
+
+      let imageBase64 = capturedImageData.split(",")[1];
+
+      const res = await axios.post(
+        "http://127.0.0.1:5000/student-attendance",
+        {
+          image: imageBase64,
+          encoding: encoding,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setProgress(100);
+        setTimeout(() => {
+          setStage("success");
+          setResultMessage(
+            `Attendance recorded successfully. Face matched! Date: ${new Date().toLocaleString()}`
+          );
+        }, 500);
+      }
+    } catch (error) {
+      console.error("Error while taking attendance:", error);
+
+      let errorMessage = "An unexpected error occurred. Please try again.";
+
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = `${error.response.data?.error} Face recognition failed. Please try again or contact support.`;
+        } else if (error.response.status === 404) {
+          errorMessage = "Face not found in the image. Please try again.";
+        } else if (error.response.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        }
+      }
+
+      setStage("error");
+      setResultMessage(errorMessage);
+    }
+  };
+
   useEffect(() => {
     return () => {
       stopCamera();
     };
   }, []);
 
+
+
   // JSX for different stages
   const renderStageContent = () => {
     switch (stage) {
       case "initial":
         return (
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center transition-all duration-500 ease-in-out transform hover:scale-105">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-brand-50 flex items-center justify-center rounded-full mb-4">
+              <div className="w-16 h-16 bg-brand-50 flex items-center justify-center rounded-full mb-4 shadow-md">
                 <LuCamera className="w-8 h-8 text-brand-500" />
               </div>
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -162,7 +198,7 @@ const GiveAttendance = () => {
             </div>
             <button
               onClick={() => setStage("code-entry")}
-              className="bg-brand-500 hover:bg-brand-600 text-white py-2 px-8 rounded-lg transition-colors">
+              className="bg-brand-500 hover:bg-brand-600 text-white py-2 px-8 rounded-lg transition-colors duration-300">
               Start
             </button>
           </div>
@@ -170,7 +206,7 @@ const GiveAttendance = () => {
 
       case "code-entry":
         return (
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md animate-fadeIn">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
               Enter Attendance Code
             </h2>
@@ -186,7 +222,7 @@ const GiveAttendance = () => {
                   type="text"
                   value={attendanceCode}
                   onChange={(e) => setAttendanceCode(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:text-white transition-colors"
                   placeholder="Enter code (e.g. 1234)"
                 />
                 {codeError && (
@@ -195,13 +231,7 @@ const GiveAttendance = () => {
                   </p>
                 )}
               </div>
-              <div className="flex space-x-3">
-                {/* <button
-                  type="button"
-                  onClick={() => setStage("initial")}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                  Back
-                </button> */}
+              <div className="flex justify-end">
                 <button
                   type="submit"
                   className="flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2 px-4 rounded-lg transition-colors">
@@ -214,7 +244,7 @@ const GiveAttendance = () => {
 
       case "camera":
         return (
-          <div className="w-full max-w-xl">
+          <div className="w-full max-w-xl animate-fadeIn">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
               Face Recognition
             </h2>
@@ -223,15 +253,14 @@ const GiveAttendance = () => {
               ready.
             </p>
 
-            <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4">
+            <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4 shadow-lg">
               <video
                 ref={videoRef}
                 autoPlay
                 playsInline
                 muted
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-cover rounded-lg transition-all duration-300"
               />
-
               {/* Hidden canvas for image capture */}
               <canvas ref={canvasRef} className="hidden" />
 
@@ -240,18 +269,10 @@ const GiveAttendance = () => {
               </div>
             </div>
 
-            <div className="flex space-x-3">
-              {/* <button
-                onClick={() => {
-                  stopCamera();
-                  setStage("code-entry");
-                }}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                Back
-              </button> */}
+            <div className="flex justify-end">
               <button
                 onClick={captureImage}
-                className="flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2 px-4 rounded-lg transition-colors">
+                className="flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2 px-4 rounded-lg transition-all duration-300">
                 Take Attendance
               </button>
             </div>
@@ -260,57 +281,49 @@ const GiveAttendance = () => {
 
       case "processing":
         return (
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center rounded-full mb-4">
-              <span className="w-8 h-8 text-blue-500 loading loading-spinner" />
+          <div className="flex flex-col items-center text-center animate-fadeIn">
+            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center rounded-full mb-4 shadow-md">
+              <span className="w-8 h-8 text-blue-500 loading loading-spinner animate-spin" />
             </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Processing
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-8">{processingStatus}</p>
-            <a href={imageData} download={true} className="btn btn-accent mb-4">
-              Download image
-            </a>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">{processingStatus}</p>
 
-            <div className="w-full max-w-md bg-gray-100 dark:bg-gray-800 rounded-full h-2.5">
+            <div className="w-40 max-w-md bg-gray-100 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
               <div
-                className="bg-blue-500 h-2.5 rounded-full animate-pulse"
-                style={{ width: "75%" }}></div>
+                className="bg-blue-500 w-40 h-2.5 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}></div>
             </div>
           </div>
         );
 
       case "success":
         return (
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 flex items-center justify-center rounded-full mb-4">
+          <div className="flex flex-col items-center text-center animate-fadeIn">
+            <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 flex items-center justify-center rounded-full mb-4 shadow-md">
               <LuCheck className="w-8 h-8 text-green-500" />
             </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Success!
             </h2>
             <p className="text-gray-600 dark:text-gray-400">{resultMessage}</p>
-            {/* <button
-              onClick={() => setStage("initial")}
-              className="mt-6 bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg transition-colors">
-              Done
-            </button> */}
           </div>
         );
 
       case "error":
         return (
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 flex items-center justify-center rounded-full mb-4">
+          <div className="flex flex-col items-center text-center animate-fadeIn">
+            <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 flex items-center justify-center rounded-full mb-4 shadow-md">
               <LuCircleAlert className="w-8 h-8 text-red-500" />
             </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               Error
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">{resultMessage}</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">{resultMessage}</p>
             <button
               onClick={() => setStage("initial")}
-              className="mt-6 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg transition-colors">
+              className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg transition-colors">
               Try Again
             </button>
           </div>
@@ -321,11 +334,52 @@ const GiveAttendance = () => {
     }
   };
 
-  return (
-    <div className="w-full">
-      <div className="bg-white dark:bg-gray-900 shadow-sm rounded-lg p-6 border border-gray-200 dark:border-gray-800">
+  return hasLectureAttendance ? (
+    <div className="w-full p-4">
+      <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 border border-gray-200 dark:border-gray-800 transition-all">
         <div className="flex flex-col items-center justify-center min-h-[400px]">
           {renderStageContent()}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="w-full p-4">
+      <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6 border border-gray-200 dark:border-gray-800 transition-all">
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+          <div className="mb-6">
+            <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 flex items-center justify-center rounded-full mb-4 shadow-md">
+              <LuCalendarX className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
+              No Active Attendance Sessions
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+              There are currently no classes or lectures requiring attendance. You'll
+              receive a notification when an instructor starts an attendance session.
+            </p>
+
+            <div className="bg-brand-50 dark:bg-gray-800/50 rounded-lg p-4 max-w-md mx-auto border border-brand-100 dark:border-gray-700">
+              <div className="flex items-center mb-3">
+                <LuBellRing className="w-5 h-5 text-brand-500 mr-2" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                  Attendance Notifications
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                You'll be notified when your instructors start attendance sessions for
+                your enrolled courses.
+              </p>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-700 dark:text-gray-300">
+                  Notification Status
+                </span>
+                <span className="flex items-center text-green-600 dark:text-green-400">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Active
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

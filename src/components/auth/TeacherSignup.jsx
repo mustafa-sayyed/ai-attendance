@@ -19,10 +19,7 @@ function TeacherSignup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Three-step validation schema:
-  // Step 1: institute and registrationToken
-  // Step 2: departments (at least one required)
-  // Step 3: teacher details: name, email, password
+
   const schema = [
     yup.object({
       institute: yup.string().required("Institute is required"),
@@ -92,10 +89,10 @@ function TeacherSignup() {
       .then((res) => {
         handleSuccess(res.data.msg);
         handleToken(res.data.token);
-        dispatch(login({ userData: res.data.user, roles: ["teacher"] }));
+        dispatch(login({ userData: res.data.user, roles: res.data.role }));
         setTimeout(() => {
           setIsFormSubmitting(false);
-          navigate("/teachers/dashboard");
+          navigate("/teacher/dashboard");
         }, 1000);
       })
       .catch((error) => {
@@ -110,7 +107,7 @@ function TeacherSignup() {
 
   const authStatus = useSelector(state => state.auth.status)
 
-  // Fetch institutes if no token exists
+
   React.useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -131,9 +128,10 @@ function TeacherSignup() {
         })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(login({ userData: res.data.user, roles: ["student"] }));
+            dispatch(login({ userData: res.data.user, roles: ["teacher"] }));
             setTimeout(() => {
-              navigate("/teachers/dashboard");
+              navigate("/teacher/dashboard");
+              setLoading(false);
             }, 1300);
           } else {
             // localStorage.removeItem("token");
@@ -150,11 +148,9 @@ function TeacherSignup() {
     }
   }, []);
 
-  // When institute is selected, update departments from that institute
   const handleInstituteChange = (e) => {
     const selectedInstituteId = e.target.value;
     setValue("institute", selectedInstituteId);
-    // Find the selected institute (assuming institutes are returned with a "departments" array)
     const selectedInstitute = institutes.find((inst) => inst._id === selectedInstituteId);
     if (selectedInstitute) {
       setDepartments(selectedInstitute.departments || []);
