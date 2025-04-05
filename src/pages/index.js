@@ -9,6 +9,8 @@ import InstituteProfile from "./InstituteProfile";
 import ManageStaff from "./ManageStaff";
 import ManageDepartment from "./ManageDeptartment";
 import ManageClasses from "./ManageClasses";
+import ManageSpecificClass from "./ManageSpecificClass";
+import ManageStudents from "./ManageStudents";
 
 export {
   Home,
@@ -22,4 +24,6 @@ export {
   ManageStaff,
   ManageDepartment,
   ManageClasses,
+  ManageSpecificClass,
+  ManageStudents,
 };

@@ -8,7 +8,8 @@ import { LogoutModal } from "../../components/auth/";
 import { SiGoogleclassroom } from "react-icons/si";
 import { useSelector } from "react-redux";
 
-const navItems = [
+// Define menu items with their required roles
+const originalNavItems = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
@@ -27,7 +28,20 @@ const navItems = [
   {
     name: "Manage Department Classes",
     icon: <SiGoogleclassroom />,
-    path: "/teacher/manage-classes",
+    path: "/teacher/manage-deptartment-classes",
+    requiredRole: "hod",
+  },
+  {
+    name: "Manage Class",
+    icon: <SiGoogleclassroom />,
+    path: "/teacher/manage-class",
+    requiredRole: "cc",
+  },
+  {
+    name: "Manage Students",
+    icon: <SiGoogleclassroom />,
+    path: "/teacher/manage-students",
+    requiredRole: "cc",
   },
   {
     name: "Reports & Analytics",
@@ -52,40 +66,14 @@ const navItems = [
 ];
 
 const othersItems = [
-  // {
-  //   icon: <PieChartIcon />,
-  //   name: "Charts",
-  //   subItems: [
-  //     { name: "Line Chart", path: "/line-chart", pro: false },
-  //     { name: "Bar Chart", path: "/bar-chart", pro: false },
-  //   ],
-  // },
-  // {
-  //   icon: <BoxCubeIcon />,
-  //   name: "UI Elements",
-  //   subItems: [
-  //     { name: "Alerts", path: "/alerts", pro: false },
-  //     { name: "Avatar", path: "/avatars", pro: false },
-  //     { name: "Badge", path: "/badge", pro: false },
-  //     { name: "Buttons", path: "/buttons", pro: false },
-  //     { name: "Images", path: "/images", pro: false },
-  //     { name: "Videos", path: "/videos", pro: false },
-  //   ],
-  // },
-  // {
-  //   icon: <PlugInIcon />,
-  //   name: "Authentication",
-  //   subItems: [
-  //     { name: "Sign In", path: "/signin", pro: false },
-  //     { name: "Sign Up", path: "/signup", pro: false },
-  //   ],
-  // },
+  // Other menu items (commented out)
 ];
 
 const AppSidebar = () => {
   const { isExpanded, isMobileOpen, toggleSidebar } = useSidebar();
   const location = useLocation();
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [filteredNavItems, setFilteredNavItems] = useState([]);
 
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [subMenuHeight, setSubMenuHeight] = useState({});
@@ -95,16 +83,24 @@ const AppSidebar = () => {
 
   const userRoles = useSelector((state) => state?.auth?.roles || []);
 
+  // Filter navigation items based on user roles
   useEffect(() => {
-    if (!userRoles.includes("hod")) {
-      navItems.splice(3, 1);
-    }
+    const filtered = originalNavItems.filter(item => {
+      // If the item requires a specific role, check if user has that role
+      if (item.requiredRole) {
+        return userRoles.includes(item.requiredRole);
+      }
+      // If no specific role is required, show the item to everyone
+      return true;
+    });
+    
+    setFilteredNavItems(filtered);
   }, [userRoles]);
 
   useEffect(() => {
     let submenuMatched = false;
     ["main", "others"].forEach((menuType) => {
-      const items = menuType === "main" ? navItems : othersItems;
+      const items = menuType === "main" ? filteredNavItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
@@ -123,7 +119,7 @@ const AppSidebar = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [location, isActive]);
+  }, [location, isActive, filteredNavItems]);
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -192,7 +188,6 @@ const AppSidebar = () => {
                 className={`menu-item group ${
                   isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                 }`}
-                // onClick={() => isExpanded ? null : toggleSidebar()}
               >
                 <span
                   className={`menu-item-icon-size ${
@@ -296,17 +291,15 @@ const AppSidebar = () => {
                   }`}>
                   Menu
                 </h2>
-                {renderMenuItems(navItems, "main")}
+                {renderMenuItems(filteredNavItems, "main")}
               </div>
             </div>
           </nav>
-          (
           <Link
             onClick={() => setLogoutModalOpen(true)}
-            className={`menu-item group ${isMobileOpen ? "mt-1" : "mt-1"} ${
+            className={`menu-item group ${isMobileOpen ? "mt-1" : "mt-7"} ${
               isActive("/logout") ? "menu-item-active" : "menu-item-inactive"
             }`}
-            // onClick={() => isExpanded ? null : toggleSidebar()}
           >
             <span
               className={`menu-item-icon-size ${
@@ -318,7 +311,6 @@ const AppSidebar = () => {
               <span className="menu-item-text">{"Logout"}</span>
             )}
           </Link>
-          )
         </div>
       </aside>
       <LogoutModal isOpen={logoutModalOpen} onClose={() => setLogoutModalOpen(false)} />

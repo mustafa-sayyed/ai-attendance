@@ -27,6 +27,8 @@ import {
   ManageStaff,
   ManageDepartment,
   ManageClasses,
+  ManageSpecificClass,
+  ManageStudents,
 } from "./pages";
 
 // Dashboard and UI components
@@ -163,10 +165,26 @@ function App() {
           <Route path="reports" element={<Blank />} />
           <Route path="settings" element={<Blank />} />
           <Route
-            path="manage-classes"
+            path="manage-deptartment-classes"
             element={
               <AuthLayout requireAuth={true} allowedRoles={["teacher", "hod", "student"]}>
                 <ManageClasses />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="manage-class"
+            element={
+              <AuthLayout requireAuth={true} allowedRoles={["teacher", "cc", "student"]}>
+                <ManageSpecificClass />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="manage-students"
+            element={
+              <AuthLayout requireAuth={true} allowedRoles={["teacher", "cc", "student"]}>
+                <ManageStudents />
               </AuthLayout>
             }
           />
